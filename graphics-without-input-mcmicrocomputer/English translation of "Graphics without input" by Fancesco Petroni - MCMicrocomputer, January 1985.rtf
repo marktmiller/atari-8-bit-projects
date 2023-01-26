@@ -1,0 +1,425 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2707
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww17800\viewh14400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 MCMicrocomputer - January 1985\
+\
+Graphics \'85 without input, Part 2, by Francesco Petroni\
+\
+With the last issue, we started the publication of a series of articles entitled "Let's start over", tending to go over the topic of Computer Graphics, which has always been dealt with on MC.\
+\
+The aim is both to coordinate the subject in a single serialized discourse, where no prior knowledge is necessary, and to make it easy for newcomers from Computermania to gain an interest in Computer Graphics.\
+\
+In this issue, we will talk about those applications of computer graphics that do not require input.\
+\
+If we want to draw a picture on a computer, for example on video, or on a plotter, we must enter data in a visualization program, and we must check that the entered data is correct.\
+\
+For example, the drawing of a floor plan for an apartment requires a large volume of input data. A mistake affects the output on video, where it is theoretically possible to "delete", and, even more so, on a plotter.\
+\
+Conversely, the design of a spatial surface derived from a mathematical formula does not require input, as it is sufficient to define the formula and the limits within which to calculate it in some part of the program.\
+\
+They are also very complex designs for the computer, as they require a large volume of calculations, and, in the output phase, a large volume of elements.\
+\
+The simplicity of the program and the complexity of the output explains their popularity when demonstrating the graphics capabilities of a machine, to the point that some of these functions have now "become famous" only for their 'photogenicity', and not for their actual usefulness, in this or that application.\
+\
+A little theory\
+==========\
+\
+At this point, we need to do some theory. We refer to the table of figure 1, which contains the four canonical cases of curves / surfaces on the plane, and the Cartesian and polar reference systems.\
+\
+The discourse on reference systems has been made several times, and therefore I'll summarize it.\
+\
+There are two reference systems, the polar one and the Cartesian one. The computer always works in a Cartesian reference system, and therefore even if the curve refers to a polar system, it is necessary to make a transformation into Cartesian, according to the formulas of table 2.\
+\
+In general, all curves related to the concept of rotation (even the circumference) should be expressed in polar coordinates, as the variable is precisely the angle of rotation. This simplifies the formula.\
+\
+The main drawback is that trigonometric expressions (sine, cosine, tangent, and inverses such as arctangent, etc.) intervene in the polar / Cartesian translation formulas, but it cannot be excluded.\
+\
+A little bit of Trigonometry\
+====================\
+\
+Whoever wants to create computer graphics to visualize functions on the plane, and in space, must be able to handle trigonometric expressions a little, and this fortunately for him does not mean that he must know trigonometry.\
+\
+===============================================\
+tab. 1\
+\
+                           Curves In Space     Surfaces in Space\
+                           Two-dimensional     three-dimensional\
+CARTESIAN       | point P (x, y)          | point P (x, y, z)\
+COORDINATES  | func. Y = f (x)         | func. z = f (x, y)\
+\
+Coordinates        | point P (R, alpha)   | point P (R, alpha, beta)\
+Polar                   | func. R = f (alpha)  | func. R = f (alpha, beta)\
+===============================================\
+Figure 1- Table 1. Case study of functions that can be represented on the plane and in space expressed in Cartesian and polar coordinates.\
+\
+=====================================================\
+tab.2.A Transformations\
+                from polar coordinates      X = R * Cos (alpha)\
+                to two-dimensional            Y = R * Sin (alpha)\
+                Cartesian\
+\
+tab.2.B Transformations\
+                from polar coordinates        X = R * Cos (alpha) * Sin (beta)\
+                to three-dimensional            Y = R * Sin (alpha) * Sin (beta)\
+                Cartesian                             Z = R * Cos (beta)\
+\
+tab.2.C Transformations\
+                from Cartesian coordinates     R = sqrt (X ^ 2 + Y ^ 2)\
+                to two-dimensional polar         alpha = ATN (X, Y)\
+=====================================================\
+Figure 2 - Table 2. Formulas for passing coordinates from polar to carresian and vice versa.\
+\
+==============================================\
+prg.   radian     degrees      sin           cos\
+0      0.00000     0.00      0.00000   1.00000\
+1      0.26100   15.00      0.25882   0.96593\
+2      0.52360   30.00      0.50000   0.86603\
+3      0.78540   45.00      0.70711    0.70711\
+4      1.04720   60.00      0.86603    0.50000\
+5      1.30900   75.00      0.96593    0.25882\
+6      1.57080   90.00      1.00000    0.00000\
+7      1.83260  105.00     0.96593   -0.25882\
+8      2.09439  120.00    0.86603   -0.50000\
+9      2.35619  135.00     0.70711   -0.70711\
+10    2.61799  150.00     0.50000   -0.86603\
+11    2.87979   165.00    0.25882   -0.96593\
+12    3.14159   180.00    0.00000   -1.00000\
+13    3.40339   195.00   -0.25882   -0.96593\
+14    3.66519   210.00   -0.50000   -0.86603\
+15    3.92699   225.00   -0.70711    -0.70711\
+16    4.18879   270.00   -0.86603    -0.50000\
+17    4.45059   255.00   -0.96593    -0.25882\
+18    4.71239   270.00   -1.00000    -0.00000\
+19    4.97419   285.00   -0.96593     0.25882\
+20    5.23599   300.00   -0.86603     0.50000\
+21    5.49779   315.00   -0.70711     0.70711\
+22    5.75959   330.00   -0.50000     0.86603\
+23    6.02139   345.00   -0.25882     0.96593\
+24    6.28319   360.00   -0.00000     1.00000\
+==============================================\
+Figure 3 - Correspondence Table. The table corresponds to angles expressed in radians and degrees. In addition, the program loads a table. in this case of 24 elements, where sine and cosine are pre-calculated for a quick search.\
+\
+In the expressions Y = SIN (X) and Y = COS (X), the X represents an angle. This angle is expressed in radians. Given a value X, the corresponding value of Y is always between -1 and +1.\
+\
+This also means that there is no one-to-one correspondence between X and Y. That is, given a value X, there is only one value of Y, but the vice versa is not true. Given the value Y (which as mentioned must be between -1 and +1) there are infinite values \uc0\u8203 \u8203 of X that differ from each other by a multiple of 360 degrees: This is valid as long as sin (x) = sin (pi - x) and cos (x) = cos (2(pi) - x).\
+\
+In general, all Basics default to using angles expressed in radians in trigonometric functions, while our "scholastic" culture leads us to reason in sexagesimal degrees. The "90 \'b0 angle" otherwise known as a right angle corresponds to 1.570796 radians, pi / 2.\
+\
+The execution of trigonometric functions is one of the slowest operations of Basic, so if in a program you need to perform these operations several times, always on the same angles, it is advisable to take measures.\
+\
+The most classic measure is to pre-calculate and insert a complete series of sines and cosines into a table. The longer this table is, the more accurate the calculation of trigonometric functions using this table will be.\
+\
+Calculation of a function\
+===================\
+\
+This paragraph is intended for non-experts only.\
+\
+Graphics without input means that the data to be displayed are not entered by the operator, which must always happen if you draw any figure, such as a house plan, or a puppet, or a face, but are directly calculated from the computer, which, after calculating them, also displays them in graphic form, according to the specifications we have given to the program.\
+\
+But in order for the computer to calculate and then draw, you still have to enter something. We will call this something FUNCTION. Plus, you have to enter the limits within which to perform the calculations.\
+\
+A function is expressed in the form Y = f(X), which means that given a value to X, by calculating the function f(X), the corresponding value of Y is found. The other information needed is for which values of X we want to calculate, and display the function.\
+\
+Let's take an example with the function Y = 2 * X + 5. Most experienced people know that this is the equation of a straight line on the plane. To play a little with this function, you can define a loop on the X, within this loop calculate the corresponding Y and then print the values \uc0\u8203 \u8203 in numerical form. The program will be:\
+\
+10 FOR X = -10 TO 10\
+20 Y = 2 * X + 5\
+30 PRINT X, Y\
+40 NEXT X\
+\
+Expressed in this form, the program will display all the X values \uc0\u8203 \u8203 between -10 and +10 and all the corresponding values \u8203 \u8203 of Y. It will do the same thing, whatever the formula, even the most complex, entered in line 20.\
+\
+The same is true for a function of two variables of the type Z = f(X, Y). Obviously there will be two loops, one on X and one on Y.\
+\
+Visualizing the calculated data in graphical form is another problem, which can be isolated from the actual calculation. We recommend beginners start by creating even complex functions, and to visualize their numerical values, \uc0\u8203 \u8203 before tackling the graphical part.\
+\
+=============================================================\
+100 REM Sine, cosine table\
+110 P=3.1415926:PP=12:PA=PP*2:PQ=P/PP:PG=P/180:GG=360\
+120 REM P                Pi\
+130 REM PA/PP        Number of items in Complete and Meta table\
+140 REM PQ             Correspondence between Table and Radians\
+150 REM PG             Correspondence between Radians and Degrees\
+160 REM S(),C()       Sine and Cosine table\
+170 DIM S(PA),C(PA):FOR I=0 TO PA:S(I)=SIN(I*PQ):C(I)=COS(I*PQ):NEXT I\
+180 CLS                             'PRINTING THE TABLE\
+190 PRINT "idx.  radians    degrees      sin        cos":PRINT\
+200 FOR I=0 TO PA:PRINT USING "###";I;\
+210 PRINT USING "####.#####";I*PQ;:PRINT USING "######.##";I*GG/PA\
+220 PRINT USING "#####.#####";S(I);:PRINT USING "####.#####";C(I):NEXT I\
+230 CLS                           'STEP BY STEP TRANSFORMATION\
+240 INPUT "Angle in Degrees        ",AG:IF AG=999 THEN 290\
+250 AG=AG-INT(AG/GG)*GG:PRINT "Angle in Degrees       ";AG\
+260 AR=PQ*AG:PRINT "Angle in Radians       ";AR\
+270 PRINT "Elements in Table      ";PA\
+280 NE=INT(.5+AR/PQ):PRINT "Table Element          ";NE:PRINT:GOTO 240\
+290 CLS                          'DIRECT TRANSFORMATION\
+300 DEF FNA(A)=INT(.5+PG*(A-INT(A/GG)*GG)/PQ)\
+310 INPUT "Angle in Degrees     ",AG:IF AG=999 THEN 350\
+320 PRINT "Sine                 ";USING "##.#####";S(FNA(AG))\
+330 PRINT "Cosine               ";USING "##.#####";C(FNA(AG))\
+340 PRINT:GOTO 310\
+350 CLS:END\
+==============================================================\
+Figure 4 - Program TABTRIG - list. The program generates the preceding table. Also two routines for transforming angles entered via. input.\
+\
+The second phase (graphical output) involves only one problem, the format, which can be solved in various ways, depending on two possible conditions:\
+\
+1 - the calculator has or does not have scaling functions\
+2 - the calculated values \uc0\u8203 \u8203 fall within the video format.\
+\
+Basically, if the calculated numerical values \uc0\u8203 \u8203 fall within the video format, there is no display problem.\
+\
+If they do not fit, they can be modified, with an operation called scaling, to bring them into the video format.\
+\
+Or, if the computer allows it, the video window is "compressed or expanded", which in practice is the same as the previous operation, only that the computer does it directly.\
+\
+Program TABTRIG\
+(trigonometric values \uc0\u8203 \u8203 table)\
+=====================\
+\
+The TABRIG program (listed in Figure 4) exemplifies the whole problem. It constructs a table as long as you like (you need to change the PP value), which matches for each iteration the angle in radians, the angle in degrees, and the sine and cosine values. These values \uc0\u8203 \u8203 are then stored in two vectors, S(I), C(I) which can be recalled directly via the index.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs38 \cf0 =========================\
+Angle in Degrees       60\
+Angle in Radians       1.047197\
+Elements in Table      24\
+Table Element            4\
+\
+Angle in Degrees       90\
+Angle in Radians       1.570796\
+Elements in Table      24\
+Table Element            6\
+\
+Angle in Degrees        7\
+Angle in Radians        .122173\
+Elements in Table       24\
+Table Element             0\
+\
+Angle in Degrees        8\
+Angle in Radians        .1396263\
+Elements in Table       24\
+Table Element             1\
+\
+\
+\
+Angle in Degrees        45\
+Sine                            0.70711\
+Cosine                        0.70711\
+\
+Angle in Degrees        90\
+Sine                            1.00000\
+Cosine                        0.00000\
+\
+Angle in Degrees        0\
+Sine                            0.00000\
+Cosine                        1.00000\
+============================\
+Figure 5 - TABTRIG program - Outputs. The hard copy of the screens of the angle translation program is shown. The angle must be entered in degrees and returned in radians, and the closest table element is searched.
+\fs36 \
+\
+====================================================================\
+100 REM Sample of Surfaces in Space\
+110 GOSUB 470:SCREEN 1:COLOR 1,0:CLS:S=2\
+120 TH=.3:S1=SIN(TH):C1=COS(TH)PH=.4:S2=SIN(PH):C2=COS(PH)\
+130 REM main loop\
+140 FOR Q=1 TO 10:GOSUB 290\
+150 REM meridians\
+160 FOR Y=-20 TO 20 STEP S:FL=0:FOR X=-20 TO 20 STEP S\
+170 ON Q GOSUB 340,350,360,370,380,390,400,410,420,430\
+180 GOSUB 270:IF FL=0 THEN FL=1:PSET (SX,SY)\
+190 LINE -(SX,SY):NEXT X:NEXT Y\
+200 REM parallels\
+210 FOR X=-20 TO 20 STEP S:FL=0:FOR Y=-20 TO 20 STEP S\
+220 ON Q GOSUB 340,350, 360,370,380,390,400,410,420,430\
+230 GOSUB 270:IF FL=0 THEN FL=1:PSET (SX,SY)\
+240 LINE -(SX,SY):NEXT Y:NEXT X:NEXT Q\
+250 GOSUB 440:END\
+260 REM routine\
+270 REM transform from 3D to 2D\
+280 SX=X1*C1-Y1*C2:SY=X1*S1+Y1*S2+Z1:RETURN\
+290 REM screen cleaning and reference tracking\
+300 PRINT CHR$(7)\
+310 I$=INKEY$:IF I$="" THEN 310\
+320 CLS:WINDOW(-10,-6)-(10,6):LINE (-10,-6)-(10,6),2,BF\
+322 LOCATE 2,2:PRINT Q:RETURN\
+330 REM functions\
+340 X1=X/5:Y1=Y/5:Z1=(1-COS(X1))*(1-COS(Y1))-3:RETURN\
+350 X1=X/6:;Y1=Y/6:Z1=.4*COS(X1*X1+Y1*Y1):RETURN\
+360 X1=X/4:Y1=Y/4:Z1=EXP(.02*(X1*X1+Y1*Y1))-3:RETURN\
+370 X1=X/4:Y1=Y/4:Z1=.02*((X1*Y1*Y1)+(Y1*X1*X1)):RETURN\
+380 X1=X/4:Y1=Y/4:Z1=.02*((X1*Y1*Y1)+(Y1*X1*X1)):RETURN\
+390 X1=X/4:Y1=Y/4:Z1=3*SIN(S1/2)*SIN(Y1/3):RETURN\
+400 X1=X/4:Y1=Y/4:K=(1-X1*X1/5-Y1*Y1/7):Z1=SQR(2*K*(SGN(K)+1)):RETURN\
+410 X1-X/6:Y1=Y/6:Z1=.02*SQR(X*X*Y*Y/2)-3:RETURN\
+420 X1-X/5:Y1=Y/5:Z1=(1-SIN(1.8*X1))*(1-COS(K))*(SGN(9.87-K)+1):RETURN\
+430 X1=X/5:Y1=Y/5:K=X1*X1+Y1*Y1:Z1=.3*(1+COS(K))*(SGN(9.87-K)+1):RETURN\
+440 REM switch to mono\
+450 DEF SEG=0:POKE &H410,(PEEK(&H410) OR &H30)\
+460 SCREEN 0:WIDTH 40:WIDTH 80:RETURN\
+470 REM switch to color\
+480 DEF SEG=0:POKE &H410,(PEEK(&H410) AND &HCF) OR &H10\
+490 SCREEN 0:WIDTH 40:SCREEN 1,0,0,0:RETURN\
+====================================================================\
+Figure 6 - SAMPLE Program - Listing. The program contains the formulas for ten spaced surfaces expressed in the form Z = f(X, Y). The surfaces are then displayed in sequence.\
+\
+It is known that the access to a vector given the index is much faster than the calculation, even if it is done directly through the Basic instruction, of a trigonometric function.\
+\
+The program produces the output of fig. 3.\
+\
+In the published output, the table contains 24 data elements, i.e. the angles differ by 15 degrees from each other. So entering, for example, the angle in degrees, with the function at line 300, this angle is transformed into the corresponding table, from which sine and cosine are obtained. The function that, given the angle, finds the table index can be performed through a formula defined with a DEF command.\
+\
+The accuracy of the calculation depends on the size of the table. With 24 data elements, the maximum error is 7 degrees, with a table of 360 data elements, the error is 0.5 degrees.\
+\
+The program continues with two routines for transforming the angles, given via input, into the corresponding values \uc0\u8203 \u8203 in the table. The two listings from these routines are shown in figure 5.\
+\
+The first accepts the angle in degrees, reduces it within the round angle (if the input is greater than 360 degrees), obtains the value in radians, and obtains the corresponding index in the table.\
+\
+Notice how in a table of 24 data elements the angle of 7 degrees is assigned to the first element of the table and the angle of 8 degrees to the second, and in the two cases, there is the maximum error of 7 degrees.\
+\
+The second routine receives the angle in degrees as input; then, through the translation function of line 300, it finds the index in the table, and therefore the sine and cosine.\
+\
+Samples\
+=======\
+\
+This is a program (listed in figure 6) with output on the color screen of the IBM PC in SCREEN 1 mode. It produces 10 different outputs (hence the name Sampling) of surfaces in space.\
+\
+The SCREEN 1 status allows a definition of 320 by 200 individually addressable pixels in four colors that can be defined in various palettes.\
+\
+The display modes, whose specifications are defined in line 120, do not vary so it was possible to define each surface in a single program line (lines from 330 to 430).\
+\
+There is therefore a general loop from 1 to 10, opened in line 140 and closed in line 240, inside which, for each value of Q, the corresponding function is displayed.\
+\
+The calculation method to translate the three-dimensional coordinates of the surface into video coordinates is the one called meridians / parallels with which two loops are nested twice, the first time on X and Y and the second on Y and X (respectively lines 160 and 210). The relative Z value is calculated according to each pair of X and Y values, by calling the "function" subroutine. The three values \uc0\u8203 \u8203 are translated into screen coordinates by routine at line 280.\
+\
+Among the general routines are ones for clearing and formatting the screen, which produces a frame, and displays the iteration number of the function (line 290 and higher).\
+\
+Then there are the two routines (lines 440 and 470) for the transition from color video output to black and white output, and vice versa. These must be inserted only if in addition to the color video, however essential for the graphic output, you also work with monochrome video.\
+\
+Of the ten outputs, only two are displayed in figures 7 and 8.\
+\
+100 REM Curves on the Epicycloid and Hypocycloid Plane\
+110 GOSUB 300:SCREEN 1:COLOR 1,0:P=3.1415926#\
+120 CLS:WINDOW (-20,-12)-(20,12):LINE (-20,-12)-(20,12),2,BF\
+130 A=4:B=1.8:C=(A+B)/B:D=(A-B)/B\
+140 Q=0:GOSUB 230:PSET (X,Y)\
+150 I$=INKEY$:IF I$<>"" THEN 170\
+160 Q=Q+.1:GOSUB 230:LINE -(X,Y):GOTO 150\
+170 GOSUB 270:LOCATE 20,1:INPUT "Press RETURN to Continue ",S$\
+180 GOSUB 300:SCREEN 1:COLOR 1,0:P=3.1415926#\
+190 CLS:WINDOW (-8,-6)-(8,6):LINE (-8,-6)-(8,6),2,BF\
+200 Q=0:GOSUB 260:PSET(X,Y)\
+210 I$=INKEY$:IF I$<>"" THEN GOSUB 270:END\
+220 Q=Q+.1:GOSUB 260:LINE -(X,Y):GOTO 210\
+230 REM first function\
+240 X=1.5*(A+B)*COS(Q)-B*COS(C*Q):Y=(A+B)*SIN(Q)-B*SIN(C*Q):RETURN\
+250 REM second function\
+260 X=1.5*(A-B)*COS(Q)+B*COS(D*Q):Y=(A-B)*SIN(Q)-B*SIN(D*Q):RETURN\
+270 REM switch to mono\
+280 DEF SEG=0:POKE &HF410,(PEEK(&HF10) OR &H30)\
+290 SCREEN 0:WIDTH 40:WIDTH 80:RETURN\
+300 REM switch to color\
+310 DEF SEG=0:POKE &H410,(PEEK(&H410) AND &HCF) OR &H10\
+320 SCREEN 0:WIDTH 40:SCREEN 1,0,0,0:RETURN\
+================================================================\
+Figure 9 - EPI & IPO Program (.. CYCLOID) - Listing. They are two families of curves on the plane that can be expressed in polar coordinates.\
+\
+EPI & HYPOCYCLOID program\
+========================\
+\
+There is a family of curves on the plane which is called a cycloid. The cycloid curve is that described by a point rigidly connected to a rolling circle. If this circle rolls on a line that is in turn circular, the resulting curve sooner or later closes on itself, in relation to the value of the ratio between the two rays.\
+\
+There are two sub-families, EPI and IPQ, depending on whether the moving circle rolls outside or inside the fixed circle. The graphic result that lends itself to numerous variations with the variation of the two rays is always pleasant.\
+\
+The EPI & IPQ program (listed in figure 9), always outputs on the IBM color monitor, produces the two curves (fig. 10 and 11), these are defined in line 130 through the values \uc0\u8203 \u8203 A and B which are the two rays and through the values \u8203 \u8203 C and D which are two values \u8203 \u8203 derived from the former, and which appear in the formulas of the cycloids.\
+\
+Since the Epicycloid "is larger" than the Hypocycloid using the same radii, we use two different windows, the first in line 120, and the second in line 190.\
+\
+The calculation of the functions and their visualization does not take place through a FOR / NEXT loop, as it is not possible to know a priori, unless we use very complicated calculations, for which the value of Q, depending on the values \uc0\u8203 \u8203 A and B, closes the curve. By pre-defining the final value of the loop, you risk either not closing the curve or retracing it several times.\
+\
+So within the Q angle increment routine, there is line 150 (and the next at 210) which recognizes when any key is pressed. At this time the execution is stopped.\
+\
+The two functions are, respectively, in routines at lines 240 (the Epicycloid) and 260 (the Ipocycloid). These are called first, at the beginning of the curve, for the initial value of the angle Q, and then as this value is increased.\
+\
+To draw other "relatives" of the cycloid family, it is necessary to change the values \uc0\u8203 \u8203 of A and/or B in line 130.\
+\
+[Petroni noted below that the values A and B at line 130 need to be adjusted for screen output, if that's what you want to use, but he didn't say how. I found that using A=31:B=29 worked well. \'97 Mark Miller]\
+=========================================================\
+100 REM INITIALIZATION\
+110 D$=CHR$(4):PL=0:REM SWITCH TO PLOTTER OR SCREEN\
+120 IF PL = 0 THEN HGR2:HCOLOR=3\
+130 A=300:B=280:C=(A+B)/B:D=6*A\
+140 R=3*A:XC=D/2:YC=D/2\
+150 J=1:GOSUB 410:REM SQUARE FRAME\
+160 GOSUB 380\
+170 J=2:GOSUB 410:REM CIRCULAR FRAME\
+180 GOSUB 440\
+190 J=3:GOSUB 410:REM MAIN LOOP\
+200 GOSUB 280\
+210 GOSUB 320\
+220 Q=Q+.1\
+230 IF Q>88 THEN END\
+240 GOSUB 310\
+250 GOSUB 280\
+260 GOSUB 350\
+270 GOTO 220:REM RETURN\
+280 REM COORDINATES CALCULATION\
+290 X=INT((A+B)*COS(Q)-B*COS(C*Q)+XC+.5)\
+300 Y=INT((A+B)*SIN(Q)-B*SIN(C*Q)+YC+.5)\
+310 RETURN\
+320 REM MOVE/PLOT\
+330 IF PL=0 THEN HPLOT X,Y:RETURN\
+340 PRINT D$"PR#4":PRINT "M";X;",",Y:PRINT D$"PR#0":RETURN\
+350 REM DRAW\
+360 IF PL=0 THEN HPLOT TO X,Y:RETURN\
+370 PRINT D$"PR#4":PRINT "D",X;",",Y:PRINT D$"PR#0":RETURN\
+380 REM BOX\
+390 IF PL=0 THEN HPLOT 0,0 TO 0,D TO D,D TO D,0 TO 0,0:RETURN\
+400 PRINT D$"PR#4":PRINT "%1",",",D;",",D:PRINT D$"PR#0":RETURN\
+410 REM PEN CHANGE\
+420 IF PL=0 THEN RETURN\
+430 PRINT D$"PR#4":PRINT "J",J:PRINT D$"PR#0":RETURN\
+440 REM ARC/CIRCLE/SPIRAL/POLYGON\
+450 IF PL=0 THEN RETURN\
+460 PRINT D$"PR#4":PRINT "W",XC,",",YC,",",R;",";R;",0,3600"\
+470 PRINT D$"PR#0":RETURN\
+==========================================================\
+Figure 12 - APPLE / GRAPHTEC Program - Listing. It is a version for Apple and Graphtec Plotter of the EP1 & IPO program. The PL switch sends output to either the Plotter or Video.\
+\
+EPI & IPO program (on Apple II and Graphtec Plotter)\
+=========================================\
+\
+This last program was created on the Apple II, with two different outputs: grayscale video, in HGR2 mode, and drawing on a Graphtec MP 1000 Plotter (formerly Watanabe), hooked up via. a Centronics parallel interface, inserted in slot 4 of the computer.\
+\
+The two outputs can be toggled via the PL switch, which if set to zero, activates the video, and otherwise, activates output to the plotter.\
+\
+Another thing that needs to be done is adjusting the code to one output or the other, by appropriately sizing the values \uc0\u8203 \u8203 A and B in line 130, according to the different resolutions of the two output modes (280 by 192 pixels on screen vs. 3600 by 2600 tenths of a millimeter on the plotter).\
+\
+Looking at the two graphics figures, one referring to an Epi (Figure 13) and the other referring to an Ipo (Figure 14), the latter is obtained by varying the formulas of lines 290 and 300. Only the fourth part of the design is drawn in the Plotter output.\
+\
+In the program, the parts relating to the calculation of the curve (the subroutine at line 290) are totally isolated from those relating to drawing via. Plotter.\
+\
+The routines recognized by the Plotter, which is seen by the computer as a printer, are various. Each of the printer routines in the code contains an "early" RETURN statement, in case the PL switch is set to zero.\
+\
+The routines are:\
+\
+Line 410 - pen change routine.\
+Line 380 - box routine, used for drawing the frame.\
+Line 440 - arc / circle / spiral / polygon routine, used for round frame design.\
+Line 320 - move routine, to position the pen at the beginning of the curve.\
+Line 350 - draw routine, to draw straight lines.\
+\
+The program is divided into three parts: the first, as usual, has variable initialization, screen clearing, etc. (lines 100-140). The design of the two frames, which are drawn only if we use the Plotter, is carried out by the two routines at lines 380 and 440.\
+\
+The second part is the MAIN loop, which runs between lines 220 and 270. It gradually increases the value of the angle Q (this continues until it exceeds the closing value), and then gradually refers to the calculation routines of the X and Y values, and tracking.\
+\
+The third and last part consists of the set of Plot routines (either on Video or on the Plotter).\
+\
+The second of the two graphic figures is not taken directly from the listed program. In fact, this provides an Epi output. To adapt it to an Ipo design, it is necessary to modify the calculation instructions for X and Y, perhaps by copying them from the Epi & Ipo program in Figure 9.\
+}
