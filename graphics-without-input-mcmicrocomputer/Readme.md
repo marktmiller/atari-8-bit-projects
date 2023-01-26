@@ -51,3 +51,8 @@ that he set up the variables in the program for plotter output, and they needed 
 what you wanted. If you look at the values I set for the variables A and B in the Turbo Basic code, and compare them to his
 code, you'll see I had to adjust these values significantly to get it to work for the screen. This has a lot to do with how
 variable D is calculated.
+
+The Apple version stops the program with an END command. If you do that on the Atari, it goes immediately back to a Graphics 0
+screen, erasing what was drawn. So, I have it draw text on the screen saying "DONE", just to the right of the design, when the
+program is through. It then goes into an endless loop to keep the image on the screen. Press the Break key, or System Reset to
+exit.
