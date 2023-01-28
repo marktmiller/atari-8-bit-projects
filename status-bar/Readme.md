@@ -30,3 +30,6 @@ blank routine does all the work.
 
 If you'd like to relocate the routine in memory, change lines 20 and 640 to use new addresses. I located the short initialization
 routine 60 bytes past the start of the vertical blank routine.
+
+I want to note that the division routine I used to extract the individual digits from the cursor coordinates is a modified version
+of the division routine described in "The Atari Assembler," by Don and Kurt Inman.
