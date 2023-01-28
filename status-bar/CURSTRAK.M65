@@ -55,7 +55,7 @@
 0550     STA (88),Y  ;Trans. to screen at
 0560     DEX         ;offset.
 0570     BPL NXTVAL  ;Will fail when X is
-0580 ;            neg.
+0580 ;                neg.
 0590     JMP 58466
 0600 DIVQUOT .BYTE 0 ;LSB of dividend/
 0610 ;                quotient.
