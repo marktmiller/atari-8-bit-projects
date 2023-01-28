@@ -1,0 +1,78 @@
+10       .OPT NO EJECT
+60       *=  $0600
+0110 CURSCOORD = 84  ;Offset 0=row,
+0160 ;                       1=col.
+0210 ZEROPG = $CB    ;Used for disp. addr.
+0260     LDX #1      ;Offset into curs. coord.
+0310 NXTVAL
+0360     LDA CURSCOORD,X
+0410 ;  Separate 2 digits
+0460 ;** Integer-divide byte by 10
+0510 ;   (decimal)
+0560 DIVISOR = 10
+0610     STA DIVQUOT ;Store dividend
+0660     CMP #0      ;If dividend>0,
+0710     BNE CONT    ;continue
+0760     STA REMAIN
+0810     BEQ DISPLAY ;else disp. char.
+0860 CONT
+0910     TXA         ;Save X on stack
+0960     PHA 
+1010     LDX #8
+1060     LDA #0
+1110 LOOP ASL DIVQUOT
+1160     ROL A
+1210     CMP #DIVISOR ;If divisor>Accum.
+1260     BCC BRANCH  ;  no subtraction
+1310     SBC #DIVISOR ;else Accum.=Accum.
+1360 ;                    - divisor,
+1410     INC DIVQUOT ; put multiple in
+1460 ;                 quotient.
+1510 BRANCH DEX      ;Go through 8 bits
+1560     BNE LOOP    ;of dividend
+1610     STA REMAIN
+1660     PLA         ;Restore X from stack
+1710     TAX 
+1760 ;** Sequence codes, disp. on scrn.
+1810 DISPLAY
+1860     BEQ DISPROW ;If X==0 (row)
+1910 ;                   use offset 37,38
+1960     LDY #34     ;else use 34,35,
+2010 ;                   col. pos.
+2060     BNE DISPCOORD
+2110 DISPROW INY     ;Show in row pos.
+2160     LDA #12     ;Place ','
+2210     STA (ZEROPG),Y
+2260     INY 
+2310 DISPCOORD
+2360     LDA DIVQUOT ;Get tens digit
+2410     CLC         ;from quotient
+2460     ADC #16     ;Cnv. to internal val.
+2510     STA (ZEROPG),Y ;Trans. to scrn.
+2560     INY         ;at offset.
+2610     LDA REMAIN  ;Get ones digit from
+2660     CLC         ;remainder.
+2710     ADC #16     ;Cnv. to internal val.
+2760     STA (ZEROPG),Y ;Trans. to scrn.
+2810     DEX         ;at offset.
+2860     BPL NXTVAL  ;Will fail when X is
+2910 ;                neg.
+2960     JMP 58466
+3010     BRK 
+3060 DIVQUOT .BYTE 0 ;LSB of dividend/
+3110 ;                quotient.
+3160 REMAIN .BYTE 0  ;Remainder
+3210 ;** VBI initialization
+3220 ;** Setup for USR call
+3260     *=  $0670
+3310 START
+3360     PLA         ;Take off arg. cnt.
+3410     PLA         ;High byte to storage
+3460     STA ZEROPG+1
+3510     PLA         ;Low byte to storage
+3560     STA ZEROPG
+3810     LDA #7
+3860     LDX #6
+3910     LDY #0
+3960     JMP 58460
+4010     RTS 
