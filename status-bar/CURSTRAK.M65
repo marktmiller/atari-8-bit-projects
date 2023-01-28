@@ -1,0 +1,72 @@
+10       .OPT NO EJECT
+20       *=  $0600
+30 CURSCOORD = 84    ;Offset 0=row,
+40 ;                         1=col.
+50       LDX #1      ;Offset into curs. coord.
+60 NXTVAL
+70       LDA CURSCOORD,X
+80 ;Separate 2 digits
+90 ;** Integer-divide byte by 10
+0100 ;   (decimal)
+0110 DIVISOR = 10
+0120     STA DIVQUOT ;Store dividend
+0130     CMP #0      ;If dividend>0,
+0140     BNE CONT    ;continue
+0150     STA REMAIN
+0160     JMP DISPLAY ;else disp. char.
+0170 CONT
+0180     TXA         ;Save X on stack
+0190     PHA 
+0200     LDX #8
+0210     LDA #0
+0220 LOOP ASL DIVQUOT
+0230     ROL A
+0240     CMP #DIVISOR ;If divisor>Accum.
+0250     BCC BRANCH   ;   no subtraction
+0260     SBC #DIVISOR ;else Accum.=Accum.
+0270 ;                      - divisor,
+0280     INC DIVQUOT ; put multiple in
+0290 ;                 quotient.
+0300 BRANCH DEX      ;Go through 8 bits
+0310     BNE LOOP    ;of dividend
+0320     STA REMAIN
+0330     PLA         ;Restore X from stack
+0340     TAX 
+0350 ;** Sequence codes, disp. on scrn.
+0360 DISPLAY
+0370     BEQ DISPROW ;If X==0 (row)
+0380 ;                   use offset 37,38
+0390     LDY #34     ;else use 34,35,
+0400 ;                   col. pos.
+0410     JMP DISPCOORD
+0420 DISPROW INY     ;Show in row pos.
+0430     LDA #12     ;Place ','
+0440     STA (88),Y
+0450     INY 
+0460 DISPCOORD
+0470     LDA DIVQUOT ;Get tens digit
+0480     CLC         ;from quotient
+0490     ADC #16     ;Convert to internal val.
+0500     STA (88),Y  ;Trans. to screen at
+0510     INY         ;offset.
+0520     LDA REMAIN  ;Get ones digit from
+0530     CLC         ;remainder.
+0540     ADC #16     ;Cnv. to internal val.
+0550     STA (88),Y  ;Trans. to screen at
+0560     DEX         ;offset.
+0570     BPL NXTVAL  ;Will fail when X is
+0580 ;            neg.
+0590     JMP 58466
+0600 DIVQUOT .BYTE 0 ;LSB of dividend/
+0610 ;                quotient.
+0620 REMAIN .BYTE 0  ;Remainder
+0630 ;** VBI initialization
+0640     *=  $0660
+0650 START LDA #7
+0660     LDX #6
+0670     LDY #0
+0680     JMP 58460
+0690     RTS 
+0700 RUNAD = $02E0   ;Tell DOS to start
+0710     *=  RUNAD   ;exec. at START.
+0720     .WORD START
