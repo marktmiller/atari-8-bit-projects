@@ -86,3 +86,6 @@ D:CTUSR.OBJ
 Then use the "B" option to get back to Basic.
 
 You should then be able to type "RUN" to run the demo (If not, reload the Basic program you saved, and run it).
+
+If you want to relocate the vertical blank routine in memory, change the addresses at lines 20 and 670. I located the
+initialization code 112 bytes ($70 bytes in hex) from the start of the vertical blank routine.
