@@ -2,9 +2,14 @@
 
 CURSTRAK.M65
 ============
-This routine tracks your cursor, as you move it around the screen. I wrote it as a vertical blank interrupt routine in Mac/65. I
-didn't locate it so that you could assemble it to memory, since it loads into Page 6, which Mac/65 uses. To assemble it, use the
-following command to assemble it to disk in Mac/65:
+This routine tracks your cursor, as you move it around the screen. I wrote it as a vertical blank interrupt routine in Mac/65.
+
+You can get Mac/65 from:
+
+https://www.atariwiki.org/wiki/Wiki.jsp?page=Mac65
+
+I didn't locate it so that you could assemble it to memory, since it loads into Page 6, which Mac/65 uses. To assemble it, use
+the following command to assemble it to disk in Mac/65:
 
 ASM ,,#D:CURSTRAK.EXE
 
@@ -25,14 +30,14 @@ change.
 
 It locates the screen address through memory locations 88 and 89 ($58, $59), and writes the coordinates directly to the screen.
 
-The division routine I used to extract the individual digits from the cursor coordinates is a modified version
-of the division routine described in "The Atari Assembler," by Don and Kurt Inman.
+The division routine I used to extract the individual digits from the cursor coordinates is a modified version of the division
+routine described in "The Atari Assembler," by Don and Kurt Inman.
 
 What this vertical blank routine illustrates is you can update status information on the screen without needing to do it in your
 main code. The routine does all the work.
 
-If you'd like to relocate the routine in memory, change lines 20 and 640 to use new addresses. I located the short initialization
-routine 96 bytes ($60 bytes hex.) past the start of the vertical blank routine.
+If you'd like to relocate the routine in memory, change lines 20 and 640 to use new addresses. I located the short
+initialization routine 96 bytes ($60 bytes hex.) past the start of the vertical blank routine.
 
 CTUSR.M65
 =========
@@ -49,7 +54,7 @@ or
 
 ASM #D:CTUSR.M65,,#D:CTUSR.OBJ
 
-to assemble it from/to disk
+to assemble it from/to disk.
 
 You'll need to use one of these two commands, since due to where I located the binary code (in Page 6), it will not assemble to
 memory.
@@ -73,7 +78,7 @@ Thomas's code, since his code has his custom display list use STAT$ as screen me
 If you want to use Atari Basic, instead, it's still possible to run this demo with my cursor tracking routine. You will not be
 able to load STATBAR.BAS, however.
 
-Most of the code in the PDF listing will work in Atari Basic. The only changes you'll need is to skip line 270, and line 280
+Most of the code in the PDF listing will work in Atari Basic. The only changes you'll need are to skip line 270, and line 280
 should read:
 
 V=USR(1648,ADR(STAT$))
