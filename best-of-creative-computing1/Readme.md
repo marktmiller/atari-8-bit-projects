@@ -96,8 +96,9 @@ You have the option to skip these, and let the game choose them for you. The opt
 outlandish. It not only sets these parameters for you, but it tells you where you will be jumping:
 
 It'll choose between Earth (fine), Mercury (Uhh...there's no atmosphere...), Venus (okay, the atmospheric pressure crushes
-you before you land...), the Moon (again, no atmosphere...), Mars (okay), Jupiter (uh, nothing to "land" on...just a big ball
-of gas...), Saturn (same...), Uranus (same...), Neptune (same...), or the Sun (Aaaaahh!!).
+you before you land...), the Moon (again, no atmosphere...), Mars (okay), Jupiter (uh, there's probably something to land
+on, but you're going to get crushed before you get there), Saturn (same...), Uranus (same...), Neptune (same...), or the
+Sun (Aaaaahh!!).
 
 This game really doesn't go for realism, but if you can ignore this shortcoming, it can be interesting. Just assume you'll
 survive if you open your chute before your altitude gets to zero. It's that simple. You don't have to worry about landing.
@@ -114,20 +115,15 @@ will reach it, if at all. You have to estimate that.
 
 Whatever time you pick, the game will divide it up into eight drop reports, showing the elapsed time, and your altitude.
 
-Another place where this game, I've found, lacks realism is that it can "miss" when you intended to open your parachute, due
-to how it divides up the time of the drop, and make you crash, when if it hadn't divided up the time that way, it would have
-"seen" this sooner, and opened your chute before you hit the ground. It's not perfect. This is a potential area where the game
-could be improved...
+I added a couple sound effects. I also added a delay to the drop reporting sequence, so that there's a little suspense (the
+original game just printed the reports as fast as Basic could print them). I based the delay on the actual time between
+reports. I also fixed a small bug. If you reach terminal velocity, the original game would keep reporting that you've reached
+terminal velocity at each report interval. I made it report that only once.
 
-I added a couple sound effects to the game. I also added a delay to the drop reporting sequence, so that there's a little
-suspense. I based the delay on the actual time between reports of your drop progress. I also fixed a small bug. If you reach
-terminal velocity, the original game would keep reporting that you've reached terminal velocity at each report interval. I
-made it report that only once.
-
-The game includes an interesting feature in that it keeps track of when you've opened your parachute in each drop, and saves
-that record to a file on disk, called PARACH.UTE. The original game allocated a "very large" array of 4000 slots to record
-this data, which made a pretty large file on disk. I just figured a record of 100 drops was more than enough. So, I shrunk
-the array to that size.
+The game includes an interesting feature in that it keeps track of the altitude at which you opened your parachute in each
+drop, and saves that record to a file on disk, called PARACH.UTE. The original game allocated a "very large" array of 4000
+slots to record this data, which made a pretty large file on disk. I just figured a record of 100 drops was more than
+enough. So, I shrunk the array to that size.
 
 When you start up the game, it tries to find this file on disk. If it's not there, it just continues with the game. If you
 quit the game, it takes the drops you've done successfully, and saves them to this file. When you start up the game again,
