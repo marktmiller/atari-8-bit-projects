@@ -8,7 +8,9 @@ You can get Mac/65 from:
 
 https://www.atariwiki.org/wiki/Wiki.jsp?page=Mac65
 
-I didn't locate it so that you could assemble it to memory, since it loads into Page 6, which Mac/65 uses. To assemble it, use
+It works on all Atari models, 400/800, and XL/XE.
+
+I didn't locate it so that you could assemble it to memory, since it loads into Page 6 ($600), which Mac/65 uses. To assemble it, use
 the following command to assemble it to disk in Mac/65:
 
 ASM ,,#D:CURSTRAK.EXE
