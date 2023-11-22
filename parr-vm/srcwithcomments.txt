@@ -1,0 +1,182 @@
+// Traditional fibonacci
+// ===============
+// def fib: args=1, locals=0
+// If N = 0 Return 0
+0: LOAD -3
+2: ICONST 0
+4: IEQ
+5: BRF 10
+7: ICONST 0
+9: RET
+// Else:
+// If N = 1 Return 1
+10: LOAD -3
+12: ICONST 1
+14: IEQ
+15: BRF 20
+17: ICONST 1
+19: RET
+// Else:
+// Return Fib(N - 1) + Fib(N - 2)
+20: LOAD -3
+22: ICONST 1
+24: ISUB
+25: CALL 0,1
+28: LOAD -3
+30: ICONST 2
+32: ISUB
+33: CALL 0,1
+36: IADD
+37: RET
+// def Main:
+//    Print(Fib(8))
+38: TIME
+39: ICONST 8
+41: CALL 0,1
+44: STORE 3
+46: STORE 4
+48: TIME
+49: LOAD 4
+51: ISUB
+52: LOAD 3
+54: PRINT
+55: PRINT
+56: HALT
+
+IP=38
+
+// Optimized fibonacci
+// ===============
+// def Fib-iter: args=5, locals=0
+// If Count = 0 Return B
+0: LOAD -3
+2: ICONST 0
+4: IEQ
+5: BRF 10
+7: LOAD -6
+9: RET
+// If Count MOD 2 = 0:
+10: LOAD -3
+12: ICONST 2
+14: IMOD
+15: ICONST 0
+17: IEQ
+18: BRF 72
+//    Return Fib-iter(A, B,
+//                      (If P + Q = 1
+//                         1
+//                       else
+//                          (P * (2 * P + Q) - 1)),
+//                      (Q * (2 * P + Q)),
+//                      (Count / 2))
+20: LOAD -7
+22: LOAD -6
+24: LOAD -5
+26: LOAD -4
+28: IADD
+29: ICONST 1
+31: IEQ
+32: BRF 38
+34: ICONST 1
+36: BR 52
+38: LOAD -5
+40: ICONST 2
+42: LOAD -5
+44: IMUL
+45: LOAD -4
+47: IADD
+48: IMUL
+49: ICONST 1
+51: ISUB
+52: LOAD -4
+54: ICONST 2
+56: LOAD -5
+58: IMUL
+49: LOAD -4
+51: ISUB
+52: LOAD -4
+54: ICONST 2
+56: LOAD -5
+58: IMUL
+59: LOAD -4
+61: IADD
+62: IMUL
+63: LOAD -3
+65: ICONST 2
+67: IDIV
+68: CALL 0,5
+71: RET
+// Else:
+//    Return Fib-iter (B * Q + A * Q + A * P, B * P + A * Q, P, Q, Count - 1)
+72: LOAD -6
+74: LOAD -4
+76: IMUL
+77: LOAD -7
+79: LOAD -4
+81: IMUL
+82: LOAD -7
+84: LOAD -5
+86: IMUL
+87: IADD
+88: IADD
+89: LOAD -6
+91: LOAD -5
+93: IMUL
+94: LOAD -7
+96: LOAD -4
+98: IMUL
+99: IADD
+100: LOAD -5
+102: LOAD -4
+104: LOAD -3
+106: ICONST 1
+108: ISUB
+109: CALL 0,5
+112: RET
+// def Main:
+// Print(Fib-iter(1,0,0,1,8))
+113: TIME
+114: ICONST 1
+116: ICONST 0
+118: ICONST 0
+120: ICONST 1
+122: ICONST 8
+124: CALL 0 5
+127: STORE 3
+129: STORE 4
+131: TIME
+132: LOAD 4
+134: ISUB
+135: LOAD 3
+137: PRINT
+138: PRINT
+139: HALT
+
+IP=113
+
+// Terence Parr's factorial algorithm
+// def fact: args=1, locals=0
+// If N < 2 Return 1
+0: LOAD -3
+2: ICONST 2
+4: ILT
+5: BRF 10
+7: ICONST 1
+9: RET
+// else:
+// Return N * Fact(N - 1)
+10: LOAD -3
+12: LOAD -3
+14: ICONST 1
+16: ISUB
+17: CALL 0 1
+20: IMUL
+21: RET
+// def Main:
+// Print(Fact(5))
+22: ICONST 5
+24: CALL 0 1
+27: PRINT
+28: HALT
+
+IP=22
