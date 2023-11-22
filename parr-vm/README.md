@@ -118,3 +118,100 @@ A section of DATA called #OPCODES contains the mnemonics of each operator, and t
 The IP instruction pointer is hardcoded at the start of each VM program, since the way Parr organized his code was that
 the first instruction of each program to execute did not start at address 0 in program memory (he stored his functions
 in lower memory, with the "main" starting point in higher memory).
+
+"Interactive" VM
+----------------
+After trying to play around with the VM for a while, I got really frustrated just looking at bytecode. So, I created what
+I call an "interactive" VM (INTVM.TBS). It's a nicer environment for looking at bytecode, since you can disassemble
+code in it, and run it, but there's no assembler, nor much of a debugger.
+
+This VM contains all the operators from VM5.TBS, and I've added a few more:
+
+IMOD - 19 - A modulo operator
+IDIV - 20 - An integer division operator
+TIME - 21 - This instruction pushes clock readings in "jiffies" (1/60th of a second) onto the stack
+
+Instead of the code being hardcoded into the VM, it only loads bytecode from files.
+
+I should mention that I also added three small programs that serialize some bytecode to files, named SAVFACT.TBS,
+SAVFIB1.TBS, and SAVFIB2.TBS.
+
+SAVFACT.TBS generates FACT.BCD, which is Parr's factorial program. The other two are a couple Fibonacci search
+programs I wrote. FIB1.BCD is a traditional Fibonacci search algorithm. It's recursive, and not very efficient.
+It's programmed to look for the 8th Fibonacci number. FIB2.BCD was really interesting for me, because I translated
+it from an exercise (where I wrote a bit of the code) in a computer science text called "Structure and
+Interpretation of Computer Programs," which optimizes the Fibonacci search. It was originally written in the Scheme programming language, a Lisp dialect. I made it run in the Parr VM, and it wasn't that hard! It's also programmed to
+look for the 8th Fibonacci number, to get an apples-to-apples comparison. It's more code, but it's a lot faster!
+
+If you run FACT.BCD, it outputs the factorial of 5, which is 120.
+
+If you run FIB1.BCD or FIB2.BCD, each outputs two numbers. The first is the 8th Fibonacci number (21), followed by
+a time value in "jiffies" showing how long it took to run. To get the number of seconds, enter this number into a
+calculator, and divide by 60.
+
+The disassembled source code, with comments, for Parr's factorial program, and my Fibonacci programs, is in the file
+srcwithcomments.txt.
+
+When you run INTVM.TBS, it takes you into an interactive environment, with a "READY" prompt.
+
+-Displaying/Running Programs-
+
+To load a program, use the command:
+
+BYTELD <filespec>
+
+Note you do not need quotations around <filespec>. It consists of a drive spec. (D:, or D<number>:), and the
+filename.
+
+To display the disassembly of the code, type "LIST"
+
+A listing consists of three columns: The first column is the address within program memory of each instruction,
+followed by the instruction, and then any arguments to that instruction, if any.
+
+All addresses are in decimal, as are all parameters to function calls.
+
+To start the program executing, type:
+
+RUN
+
+I didn't implement any trap for the Break key. If you press Break, it will take you back to Turbo Basic.
+
+To leave the VM "gracefully," type at the READY prompt:
+
+EXIT
+
+This will return you to Turbo Basic (you will see Turbo Basic's "Turbo" prompt).
+
+-A little debugging-
+
+This VM allows you to look at, and alter its registers: IP, and SP, from within this interactive environment.
+
+When each program was serialized, the preset for the start of the program (for the instruction pointer) was saved,
+and is loaded into the VM, when each program is loaded. If you want to see this value, just type the register
+name, "IP", and hit Return.
+
+If you want to change the IP value, type:
+
+IP=<address>
+
+(Put the new zero-based decimal address where you see "<address>")
+
+Same goes for the stack pointer, type "SP" by itself, hit Return, and you will see its current address in the stack.
+
+Before a program is run, SP defaults to -1.
+
+You can change the stack pointer by typing:
+
+SP=<address>
+
+The default is for program tracing to be turned off. To turn tracing on, type:
+
+DEBUG
+
+If you want tracing turned off, type:
+
+NODEBUG
+
+The tracing output is in three sections, when the program runs: The current instruction pointer address in program
+memory, followed by ":", then a disassembly of the currently executing instruction, and its arguments (if any), and
+a horizontal readout of the stack's contents (in []'s), from the first element to the stack pointer's location.
