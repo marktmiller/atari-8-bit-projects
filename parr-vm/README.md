@@ -156,13 +156,13 @@ srcwithcomments.txt.
 
 When you run INTVM.TBS, it takes you into an interactive environment, with a "READY" prompt.
 
--Displaying/Running Programs-
+-=Displaying/Running Programs=-
 
 To load a program, use the command:
 
-BYTELD <filespec>
+BYTELD filespec
 
-Note you do not need quotations around <filespec>. It consists of a drive spec. (D:, or D<number>:), and the
+Note you do not need quotations around filespec. It consists of a drive spec. (D:, or D<number>:), and the
 filename.
 
 To display the disassembly of the code, type "LIST"
@@ -184,7 +184,7 @@ EXIT
 
 This will return you to Turbo Basic (you will see Turbo Basic's "Turbo" prompt).
 
--A little debugging-
+-=A little debugging=-
 
 This VM allows you to look at, and alter its registers: IP, and SP, from within this interactive environment.
 
@@ -194,9 +194,9 @@ name, "IP", and hit Return.
 
 If you want to change the IP value, type:
 
-IP=<address>
+IP=address
 
-(Put the new zero-based decimal address where you see "<address>")
+(Put the new zero-based decimal address where you see "address")
 
 Same goes for the stack pointer, type "SP" by itself, hit Return, and you will see its current address in the stack.
 
@@ -204,7 +204,9 @@ Before a program is run, SP defaults to -1.
 
 You can change the stack pointer by typing:
 
-SP=<address>
+SP=address
+
+(Put the new zero-based decimal address where you see "address")
 
 The default is for program tracing to be turned off. To turn tracing on, type:
 
