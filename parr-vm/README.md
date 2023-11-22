@@ -13,7 +13,7 @@ Each file is implemented in Turbo Basic XL. You can find Turbo Basic at:
 https://atariwiki-org.translate.goog/wiki/Wiki.jsp?page=Turbo-BASIC+XL&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp
 
 The files in this folder follow Parr's code presentation (you should watch the video). He goes through it in phases,
-starting with a set of 17 operators, and a program that's only 4 bytes long. At the end, his operator set goes up to 19,
+starting with a set of 16 operators, and a program that's only 4 bytes long. At the end, his operator set goes up to 18,
 and a program that's 29 bytes long.
 
 This is not a professional-grade VM. He designed it to be simple enough to show in his 2-hour demo, but it gets the
