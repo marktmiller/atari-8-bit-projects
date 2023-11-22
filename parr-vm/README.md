@@ -128,13 +128,15 @@ code in it, and run it, but there's no assembler, nor much of a debugger.
 This VM contains all the operators from VM5.TBS, and I've added a few more:
 
 IMOD - 19 - A modulo operator
+
 IDIV - 20 - An integer division operator
+
 TIME - 21 - This instruction pushes clock readings in "jiffies" (1/60th of a second) onto the stack
 
 Instead of the code being hardcoded into the VM, it only loads bytecode from files.
 
 I should mention that I also added three small programs that serialize some bytecode to files, named SAVFACT.TBS,
-SAVFIB1.TBS, and SAVFIB2.TBS.
+SAVFIB1.TBS, and SAVFIB2.TBS. These programs serialize bytecodes into binary files.
 
 SAVFACT.TBS generates FACT.BCD, which is Parr's factorial program. The other two are a couple Fibonacci search
 programs I wrote. FIB1.BCD is a traditional Fibonacci search algorithm. It's recursive, and not very efficient.
