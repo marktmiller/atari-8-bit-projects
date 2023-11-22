@@ -55,30 +55,47 @@ in an array called CODE, where the code in DATA statements is loaded when the VM
 
 His VM, when all is said and done, uses the following instruction set (listed with mnemonic, followed by byte code value):
 
-IADD   1  Integer add - Pops two values from stack, adds them, and pushes result onto stack.
-ISUB   2  Integer subtract - Pops two values from stack, subtracts upper from lower value, and pushes result onto stack.
-IMUL   3  Integer multiply - Pops two values from stack, multiplies them, and pushes result onto stack.
-ILT    4  If Less Than - Pops two values from stack. If upper value is less than lower value, it pushes 1 onto stack
+IADD - 1 - Integer add - Pops two values from stack, adds them, and pushes result onto stack.
+
+ISUB - 2 - Integer subtract - Pops two values from stack, subtracts upper from lower value, and pushes result onto stack.
+
+IMUL - 3 - Integer multiply - Pops two values from stack, multiplies them, and pushes result onto stack.
+
+ILT - 4 - If Less Than - Pops two values from stack. If upper value is less than lower value, it pushes 1 onto stack
                          Otherwise, it pushes 0.
-IEQ    5  If EQual - Pops two values from stack. If they're equal, it pushes 1 onto stack. Otherwise, it pushes 0.
-BR     6  BRanch always - Branches to given address in program memory.
-BRT    7  BRanch if True - Pops value from stack, and branches to given address in program memmory, if the value is 1.
-BRF    8  BRanch if False - Pops value from stack, and branches to given address in program memory, if the value is 0.
-ICONST 9  Integer CONSTant - Pushes given integer value onto stack.
-LOAD   10 (Copies value at given offset from the frame pointer location, and pushes it onto stack)
-GLOAD  11 Global LOAD - Copies value at given address in global memory, and pushes it onto stack.
-STORE  12 (Pops value from stack, and stores it at given offset from frame pointer location)
-GSTORE 13 (Pops value from stack, and stores it at given address in global memory)
-PRINT  14 (Pops value from stack, and prints it to the screen)
-POP    15 (Simply pops value from stack)
-HALT   16 (Stops execution)
-CALL   17 CALL function at given address, with parameter count, and give return value - Pushes the parameter count,
-          the frame pointer, and the address of the next instruction in program memory to execute upon return, onto
-          the stack, and moves the instruction pointer to the specified program memory address. (Function can use any
-          values pushed onto stack, before the CALL, as its parameters. Hence, the parameter count is pushed.)
-RET    18 Return from function - Pops the next execution address, the old frame pointer, and the parameter count from
-          the stack. It sets the instruction pointer to the next execution address, and the frame pointer to its old
-          value.
+
+IEQ - 5 - If EQual - Pops two values from stack. If they're equal, it pushes 1 onto stack. Otherwise, it pushes 0.
+
+BR - 6 - BRanch always - Branches to given address in program memory.
+
+BRT - 7 - BRanch if True - Pops value from stack, and branches to given address in program memmory, if the value is 1.
+
+BRF - 8 - BRanch if False - Pops value from stack, and branches to given address in program memory, if the value is 0.
+
+ICONST - 9 - Integer CONSTant - Pushes given integer value onto stack.
+
+LOAD - 10 - (Copies value at given offset from the frame pointer location, and pushes it onto stack)
+
+GLOAD - 11 - Global LOAD - Copies value at given address in global memory, and pushes it onto stack.
+
+STORE - 12 - (Pops value from stack, and stores it at given offset from frame pointer location)
+
+GSTORE - 13 - (Pops value from stack, and stores it at given address in global memory)
+
+PRINT - 14 - (Pops value from stack, and prints it to the screen)
+
+POP - 15 - (Simply pops value from stack)
+
+HALT - 16 - (Stops execution)
+
+CALL - 17 - CALL function at given address, with parameter count, and give return value - Pushes the parameter count,
+            the frame pointer, and the address of the next instruction in program memory to execute upon return, onto
+            the stack, and moves the instruction pointer to the specified program memory address. (Function can use any
+            values pushed onto stack, before the CALL, as its parameters. Hence, the parameter count is pushed.)
+          
+RET - 18 - Return from function - Pops the next execution address, the old frame pointer, and the parameter count from
+           the stack. It sets the instruction pointer to the next execution address, and the frame pointer to its old
+           value.
 
 LOAD and STORE operators exist to facilitate accessing function parameters, and storing "local variables," on the
 stack.
