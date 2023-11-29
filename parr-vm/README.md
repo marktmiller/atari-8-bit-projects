@@ -59,31 +59,31 @@ and number of parameters it takes):
 IADD - 1, 0 parameters - Integer add - Pops two values from stack, adds the values, and pushes the result onto the stack.
 
 ISUB - 2, 0 parameters - Integer subtract - Pops two values from stack, subtracts the upper from the lower (in stack
-position) value, and pushes the result onto the stack.
+                         position) value, and pushes the result onto the stack.
 
 IMUL - 3, 0 parameters - Integer multiply - Pops two values from stack, multiplies them, and pushes result onto stack.
 
 ILT - 4, 0 parameters - If Less Than - Pops two values from stack. If upper value is less than the lower (in stack
-position) value, it pushes 1 onto the stack. Otherwise, it pushes 0.
+                        position) value, it pushes 1 onto the stack. Otherwise, it pushes 0.
 
 IEQ - 5, 0 parameters - If EQual - Pops two values from stack. If they're equal, it pushes 1 onto the stack. Otherwise,
-it pushes 0.
+                        it pushes 0.
 
 BR - 6, 0 parameters - BRanch always - Branches to given address in program memory.
 
 BRT - 7, 1 addr. parameter - BRanch if True - Pops value from stack, and branches to given address in program memmory, if
-the popped value is 1.
+                             the popped value is 1.
 
-BRF - 8, 1 addr. paramter - BRanch if False - Pops value from stack, and branches to given address in program memory, if
-the popped value is 0.
+BRF - 8, 1 addr. parameter - BRanch if False - Pops value from stack, and branches to given address in program memory, if
+                             the popped value is 0.
 
 ICONST - 9, 1 integer parameter - Integer CONSTant - Pushes given integer value onto stack.
 
 LOAD - 10, 1 integer parameter - (Copies value at given offset from the frame pointer location, and pushes it onto the
-stack)
+                                 stack)
 
 GLOAD - 11, 1 integer parameter - Global LOAD - Copies value at given address in global memory, and pushes it onto the
-stack.
+                                  stack.
 
 STORE - 12, 1 integer value - (Pops value from stack, and stores it at given offset from frame pointer location)
 
