@@ -1,6 +1,6 @@
 // Traditional fibonacci
 // ===============
-// def fib: args=1, locals=0
+// def fib(N): args=1, locals=0
 // If N = 0 Return 0
 0: LOAD -3
 2: ICONST 0
@@ -17,7 +17,7 @@
 17: ICONST 1
 19: RET
 // Else:
-// Return Fib(N - 1) + Fib(N - 2)
+//    Return Fib(N - 1) + Fib(N - 2)
 20: LOAD -3
 22: ICONST 1
 24: ISUB
@@ -28,18 +28,22 @@
 33: CALL 0,1
 36: IADD
 37: RET
-// def Main:
-//    Print(Fib(8))
+// def Main: args=0, locals=2:
+//    A=Time()
 38: TIME
+//    B=Print(Fib(8))
 39: ICONST 8
 41: CALL 0,1
 44: STORE 3
 46: STORE 4
+//    A=Time()-A
 48: TIME
 49: LOAD 4
 51: ISUB
+//    Print(B)
 52: LOAD 3
 54: PRINT
+//    Print(A)
 55: PRINT
 56: HALT
 
@@ -47,7 +51,7 @@ IP=38
 
 // Optimized fibonacci
 // ===============
-// def Fib-iter: args=5, locals=0
+// def Fib-iter(A, B, P, Q, Count): args=5, locals=0
 // If Count = 0 Return B
 0: LOAD -3
 2: ICONST 0
@@ -133,29 +137,33 @@ IP=38
 108: ISUB
 109: CALL 0,5
 112: RET
-// def Main:
-// Print(Fib-iter(1,0,0,1,8))
+// def Main: args=0, locals=2:
+//   A=Time()
 113: TIME
 114: ICONST 1
 116: ICONST 0
 118: ICONST 0
 120: ICONST 1
 122: ICONST 8
+//   B=Fib-iter(1,0,0,1,8)
 124: CALL 0 5
 127: STORE 3
 129: STORE 4
+//   A=Time()-A
 131: TIME
 132: LOAD 4
 134: ISUB
+//   Print(A)
 135: LOAD 3
 137: PRINT
+//   Print(B)
 138: PRINT
 139: HALT
 
 IP=113
 
 // Terence Parr's factorial algorithm
-// def fact: args=1, locals=0
+// def Fact(N): args=1, locals=0
 // If N < 2 Return 1
 0: LOAD -3
 2: ICONST 2
@@ -164,7 +172,7 @@ IP=113
 7: ICONST 1
 9: RET
 // else:
-// Return N * Fact(N - 1)
+//   Return N * Fact(N - 1)
 10: LOAD -3
 12: LOAD -3
 14: ICONST 1
@@ -173,7 +181,7 @@ IP=113
 20: IMUL
 21: RET
 // def Main:
-// Print(Fact(5))
+//   Print(Fact(5))
 22: ICONST 5
 24: CALL 0 1
 27: PRINT
