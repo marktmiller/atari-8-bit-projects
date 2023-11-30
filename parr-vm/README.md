@@ -231,3 +231,22 @@ NODEBUG
 The tracing output is in three sections, when the program runs: The current instruction pointer address in program
 memory, followed by ":", then a disassembly of the currently executing instruction, and its arguments (if any), and
 a horizontal readout of the stack's contents (in []'s), from the first element to the stack pointer's location.
+
+Edit 11/30/23: As an exercise in learning FastBasic, I ported VM5.TBS to DMSC's FastBasic. I thought I'd include it
+here, saved as VM5.FBS, if people want to take a look at that.
+
+Some changes had to be made to the way that the operator strings are addressed in the FastBasic version, due to the fact
+that even though FastBasic supports string arrays, it doesn't have a READ command for DATA statements. Instead, arrays
+are initialized off DATA automatically. No READ loops necessary. However, arrays of strings can only be initialized off
+DATA as Byte arrays. Addressing such an array is effectively like using a packed character array, which means you sort
+of have to address them like string buffers in Atari Basic or Turbo Basic. In FastBasic, individual strings in Byte
+arrays have a length attribute that you have to skip over when indexing through them.
+
+I also had to segregate out the operand count DATA into its own set (it's unified with the operator strings in the
+Turbo Basic version).
+
+What's nice about this version is FastBasic can use integer math (Turbo Basic only works in floating-point), which
+suits the way Parr's VM operates. The CPU works faster with integers, and indeed, this version of VM5 runs 81% faster
+than the one for Turbo Basic.
+
+You can find FastBasic at: https://github.com/dmsc/fastbasic
