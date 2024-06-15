@@ -71,7 +71,7 @@ IEQ - 5, 0 parameters - If EQual - Pops two values from stack. If they're equal,
 
 BR - 6, 0 parameters - BRanch always - Branches to given address in program memory.
 
-BRT - 7, 1 addr. parameter - BRanch if True - Pops value from stack, and branches to given address in program memmory, if
+BRT - 7, 1 addr. parameter - BRanch if True - Pops value from stack, and branches to given address in program memory, if
                              the popped value is 1.
 
 BRF - 8, 1 addr. parameter - BRanch if False - Pops value from stack, and branches to given address in program memory, if
@@ -98,8 +98,8 @@ HALT - 16, 0 parameters - (Stops execution)
 CALL - 17, 1 addr. parameter, and 1 integer parameter - CALL function at given address, with parameter count, and give
            return value - Pushes the parameter count, the frame pointer, and the address of the next instruction in
            program memory to execute upon return, onto the stack, and moves the instruction pointer to the specified
-           program memory address. (Function uses any values pushed onto stack, before the CALL, as its parameters.
-           Hence, the parameter count is pushed.)
+           program memory address. (Called function uses any values pushed onto stack, before the CALL, as its
+           parameters. Hence, the parameter count is pushed.)
           
 RET - 18, 0 parameters - Return from function - Pops the next execution address, the old frame pointer, and the parameter
           count from the stack. It sets the instruction pointer to the next execution address, and the frame pointer to
