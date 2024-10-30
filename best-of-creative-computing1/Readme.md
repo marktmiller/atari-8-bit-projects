@@ -30,14 +30,14 @@ In the first version, listed as DEPCHG1.BAS, the sub is randomly placed somewher
 during the game. You as the player also only get four shots before the sub blows up your boat with a torpedo. When the game
 starts, you get to specify how large the cube is. For example, "10" for a 10x10x10 cube.
 
-The second version, listed as DEPCHG2.BAS, is the same game, but the sub can also move one "space" in a random direction
+The second version, listed as DEPCHG2.BAS, is the same game, but the sub can move one "space" in a random direction
 between your shots, in any of the three dimensions (East-West, North-South, or up-down). So, in order to hit it, you probably
 need to guess where it's moved *to*, not just where it was last reported by sonar. You are also asked how many shots/chances
 you want before the sub blows you up. So, you can make this game as easy or hard as you want.
 
-The way the coordinates are laid out is imagine your boat is floating on a "cube" of water where the origin is at the southwest
-corner. The X-axis goes from West (lower number) to East (higher number), the Y-axis goes from South (lower number) to North
-(higher number), and the Z-axis goes from the surface (0) down to the deepest part of the "cube" (higher number).
+The way the coordinates are laid out is imagine your boat is floating on a "cube" of water where the origin is at the
+southwest corner. The X-axis goes from West (lower number) to East (higher number), the Y-axis goes from South (lower number)
+to North (higher number), and the Z-axis goes from the surface (0) down to the deepest part of the "cube" (higher number).
 
 All coordinates are from 0 to the extent of the cube - 1, whatever you chose that extent to be. So, for a 10x10x10 cube, all
 coordinates are from 0 to 9.
