@@ -1,18 +1,17 @@
 # Atari version of "Graphics without input"
 Original version by Francesco Petroni
 
-I became inspired by looking at "Graphs of functions in Visual Basic for DOS" in Retro Magazine World (July/August 2021 issue),
-by Francesco Fiorentini (https://www.retromagazine.net/retromagazine-world-09-eng-july-august-2021/). He based his code off of
-code from an original article by Francesco Petroni, called "Graphics...without input," from MCMicrocomputer Magazine,
-published in January 1985 (https://www.digitanto.it/mc-online/PDF/Articoli/037_083_088_0.pdf).
+I became inspired by looking at [Graphs of functions in Visual Basic for DOS](https://www.retromagazine.net/retromagazine-world-09-eng-july-august-2021/) in Retro Magazine World (July/August 2021 issue),
+by Francesco Fiorentini. He based his code off of
+code from an original article by Francesco Petroni, called [Graphics...without input](https://www.digitanto.it/mc-online/PDF/Articoli/037_083_088_0.pdf) from MCMicrocomputer Magazine,
+published in January 1985.
 
 When I was an Atari owner in my youth, I'd sometimes see programs written for other computers (Commodore PET, IBM PC, Apple II,
 etc.) that would do stuff like this, but I saw none for the Atari. I thought they looked really neat. So, I thought I'd try
 my hand at recreating the same thing on the Atari, because surely it can do it!
 
 I went through Petroni's original article, and adapted each of his Basic programs. I wrote the new versions in Turbo Basic XL
-(You can get Turbo Basic XL from:
-https://atariwiki-org.translate.goog/wiki/Wiki.jsp?page=Turbo-BASIC+XL&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp)
+(You can get Turbo Basic XL from [here](https://atariwiki-org.translate.goog/wiki/Wiki.jsp?page=Turbo-BASIC+XL&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp)).
 
 With each one, I tried to keep Petroni's code as intact as possible (only changing it where I had to), but I adapted his
 output to the way the Atari operates.
