@@ -1,25 +1,21 @@
 # Selections from the Best of Creative Computing, Vol. 1, 1978
 
-These are my Atari versions of some Basic games that were published in the first volume of the Best of Creative Computing,
+These are my Atari versions of some Basic games that were published in the first volume of the [Best of Creative Computing](https://archive.org/details/Best_of_Creative_Computing_Vol_1_1978_Creative_Computing_Press/mode/2up),
 by various authors. All of the games run in text mode.
-
-https://archive.org/details/Best_of_Creative_Computing_Vol_1_1978_Creative_Computing_Press/mode/2up
 
 I'm differentiating between versions of Basic for this collection. The first game, "Depth Charge," is written in Atari Basic,
 and has the extension ".BAS". All the other games in this collection are written in Turbo Basic XL, and have the extension
 ".TBS".
 
-You can find Turbo Basic at:
+You can find Turbo Basic [here](https://atariwiki-org.translate.goog/wiki/Wiki.jsp?page=Turbo-BASIC+XL&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp).
 
-https://atariwiki-org.translate.goog/wiki/Wiki.jsp?page=Turbo-BASIC+XL&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp
-
-# Depth Charge
+### Depth Charge
 
 Many years ago, I got a request to create an Atari Basic version of a game published in Creative Computing, called "Depth
 Charge," to create a video of me playing it, and to send the source code to the person who requested it. I decided I'd grant
 the request, as I have a fondness for the magazine, and I thought the game might be fun.
 
-You can see my video of the game at https://youtu.be/xf1bEEx80aM
+You can see my video of the game at [Depth Charge - Creative Computing 1976](https://youtu.be/xf1bEEx80aM).
 
 Since I was making the game for the Atari, I thought I'd put in some sound and visual effects, which were not in the original
 version.
@@ -65,7 +61,7 @@ deeper shots sound quieter (since they're deeper underwater), but in my tests, I
 
 These "enhanced" versions are also written in Atari Basic, listed as DEPCHGE1.BAS and DEPCHGE2.BAS.
 
-# Magic Cube
+### Magic Cube
 
 This game is a tad like tic-tac-toe, but the goal is a bit more complicated. It's not about X's and O's, but how numbers add
 up in a 3x3 square. What you want to do is make sure the horizontals, verticals, and/or diagonals you complete add up to 15,
@@ -73,7 +69,7 @@ but to win, you want to prevent the computer from doing the same. The computer i
 
 I didn't make much in the way of enhancements to this game. It's written in Turbo Basic, listed as MAGIC.TBS.
 
-# Reverse
+### Reverse
 
 The goal of this game is to descramble a series of randomly arranged digits. The challenge is the only thing you can do is
 reverse the order of a portion of them from the left side. You get to decide how many to reverse for each move. You can enter
@@ -86,7 +82,7 @@ To finish the game, the sequence of digits must read:
 
 I didn't make any enhancements to this game. It's written in Turbo Basic, listed as REVERSE.TBS.
 
-# Splat
+### Splat
 
 You are a parachutist. You drop from an altitude, and the goal is to open your chute before you hit the ground, and go splat!
 However, the game rates you based on how low you get before opening your chute. The lower the better.
