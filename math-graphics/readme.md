@@ -16,7 +16,7 @@ It was originally written to run in a much higher resolution. I pared down the r
 number of calculations the program does.
 
 ## Modified Guilloche pattern
-From Microsoft Small Basic, from a book called "Kid Programmer"
+From a book called "Kid Programmer," written in Microsoft Small Basic,
 ![Microsoft Small Basic - Modified Guilloche pattern](https://github.com/user-attachments/assets/093167e9-6124-4e12-b3f8-706b5e5420d6)
 
 The Turbo Basic version is called GUILLOCH.TBS
@@ -32,14 +32,14 @@ using the Python code as a "sanity check."
 The Turbo Basic version is called SCHOTTER.TBS
 
 ## Fractals in Focus
-From TRS-80 Hi-Res Basic, in the May 1985 issue of 80-Microcomputing Maggazine, article written by Steve Justice
+From TRS-80 Hi-Res Basic, in the May 1985 issue of 80-Microcomputing Magazine, article written by Steve Justice
 [Fractals in Focus in the May 1985 issue of 80-Microcomputer Magazine](https://archive.org/details/80-microcomputing-magazine-1985-05/page/n59/mode/2up?view=theater)
 ![80-micro Magazine - Fractals in Focus](https://github.com/user-attachments/assets/39dc02d7-bdc1-4bfe-9166-29e1a9cf6426)
 
 Tektronix Basic version by Monty Jaggers McGraw
 ![Tektronix Basic - Fractals in Focus](https://github.com/user-attachments/assets/2ac15deb-cee8-4d19-8208-c8ff0fec299d)
 
-I used the original TRS-80 Hi-Res Basic version to adapt it to the Atari, but was inspired by a change McGgraw made in his
+I used the original TRS-80 Hi-Res Basic version to adapt it to the Atari, but was inspired by a change McGraw made in his
 Tektronix version, where he displayed the input parameters, and the generated directional "moves" that the program uses to
 generate the fractal, alongside the graphic. You'll see I did the same thing in the Atari version (as much as could be
 displayed).
