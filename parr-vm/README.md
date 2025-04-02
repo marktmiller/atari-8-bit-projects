@@ -149,7 +149,7 @@ To load a program, use the command:
 
 `BYTELD <filespec>`
 
-Note you do not need quotations around <filespec>. It consists of a drive spec., and the filename.
+Note you do not need quotations around the filespec. It consists of a drive spec., and the filename.
 
 Example: `BYTELD D:FACT.BCD`
 
@@ -191,7 +191,7 @@ SP
 SP=3
 ```
 
-and you will see its current address in the 0-based stack.
+and you will see its current address in the zero-based stack.
 
 Note that program memory (the array called CODE) and stack memory (the array called STACK) are two separate address spaces.
 While IP will only refer to an address (index value) within the CODE array, SP and FP refer to the same memory area in
