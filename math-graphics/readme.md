@@ -54,3 +54,13 @@ Reading the article by Justice is helpful, as he explains some parameters you'll
 
 I converted a series of old GW-Basic programs to Turbo Basic a while back, out of an article by Francesco Petroni. I stored
 it under [Graphics Without Input](/atari-8-bit-projects/graphics-without-input-mcmicrocomputer/) in this repository.
+
+## Rotating pyramid
+
+![Rotating pyramid](https://github.com/user-attachments/assets/177ae518-a015-4d23-816b-104de260303b)
+
+I ported QBasic (PC) code written by Andy Green of a rotating 3D wireframe pyramid to Turbo Basic. It's a simple demo of 3D
+rendering. My version is listed here as ROTPYR.TBS. I use page flipping (aka. double-buffering) to do the animation. To clear
+the back buffer, I use an assembly routine I wrote in Mac/65, listed here as USRFILL.M65, which I access via. USR() call. I
+translated the binary routine to DATA statements. ROTPYR Pokes it into memory, and uses it. The assembly source code is just
+here for readers.
