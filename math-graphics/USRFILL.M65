@@ -1,0 +1,63 @@
+10       .OPT OBJ
+20 SCRADR =  $02
+30       *=  $6000
+40       PLA         ;Remove # args
+50       PLA 
+60       STA SCRADR+1
+70       PLA 
+80       STA SCRADR
+90       PLA 
+0100     PLA         ;Get byte to copy
+0110     STA VALUE
+0120     PLA         ;# bytes to
+0130     STA ENDADDR+1 ;cover
+0140     PLA 
+0150     SEC         ;Offset for add
+0160     SBC #1
+0170     STA ENDADDR
+0180     LDA ENDADDR+1
+0190     SBC #0
+0200     STA ENDADDR+1
+0210     LDA SCRADR
+0220     CLC 
+0230     ADC ENDADDR ;Calc. end
+0240     STA ENDADDR ;addr.
+0250     LDA SCRADR+1
+0260     ADC ENDADDR+1
+0270     STA ENDADDR+1
+0280     LDY #0
+0290 LOOP1
+0300     LDA VALUE
+0310     ;           Loop in 256-byte
+0320     ;           chunks
+0330 LOOP2
+0340     STA (SCRADR),Y
+0350     INY 
+0360     BNE LOOP2   ;Cont. loop
+0370     ;           if Y hasn't
+0380     ;           turned over
+0390     INC SCRADR+1
+0400     LDA SCRADR+1 ;If hi-bytes
+0410     CMP ENDADDR+1 ;not equal,
+0420     BNE LOOP1   ;cont. loop
+0430     ;   
+0440     ;           Calc. remaining
+0450     ;           bytes to fill
+0460     LDA ENDADDR
+0470     CMP SCRADR  ;Chk. if beyond ENDSCR
+0480     BMI STOP
+0490     SEC 
+0500     SBC SCRADR  ;Calc. remaining
+0510     STA ENDADDR ;bytes to fill
+0520     LDA VALUE
+0530 LOOP3
+0540     ;           Fill remainder
+0550     STA (SCRADR),Y
+0560     CPY ENDADDR
+0570     BEQ STOP
+0580     INY 
+0590     BNE LOOP3
+0600 STOP
+0610     RTS 
+0620 ENDADDR .WORD 0
+0630 VALUE .BYTE 0
