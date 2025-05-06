@@ -53,7 +53,7 @@ Reading the article by Justice is helpful, as he explains some parameters you'll
 ![Graphics Without Input images](https://github.com/user-attachments/assets/1b56b136-0b48-4740-9f0a-d26c63a4ef00)
 
 I converted a series of old GW-Basic programs to Turbo Basic a while back, out of an article by Francesco Petroni. I stored
-it under [Graphics Without Input](/atari-8-bit-projects/graphics-without-input-mcmicrocomputer/) in this repository.
+it under [Graphics Without Input](https://github.com/marktmiller/atari-8-bit-projects/tree/main/graphics-without-input-mcmicrocomputer) in this repository.
 
 ## Rotating pyramid
 
