@@ -1,0 +1,248 @@
+10 ;******************************
+20 ;ROWCURS by Mark Miller, 2025
+30 ;
+40 ; I use this to bracket the
+50 ; cursor. This is done via. VBI.
+60 ; It watches a pair of row
+70 ; positions via. ROWCRS. If the
+80 ; curs. is in either one, it
+90 ; plugs a new value into ROWCRS,
+0100 ; to reposition the curs.
+0110 ; However, telling the OS where
+0120 ; to put the curs. is not
+0130 ; enough. You have to tell the
+0140 ; OS to output something, to
+0150 ; get the curs. to move. So, I
+0160 ; offset the "reset" pos's
+0170 ; this rout. is given, and
+0180 ; "wobble" the curs., using
+0190 ; "up" or "down" char's,
+0200 ; plugged into KEY.
+0210 ;
+0220 ;The VBI is initialized via.
+0230 ;USR().
+0240     .OPT OBJ
+0250     *=  $6000
+0260 ROWCRS = $54    ;Row of curs.
+0270 DINDEX = $57    ;Gr. mode
+0280 CH  =   $02FC   ;Key pressed
+0290 XITVBV = $E462  ;Exit to OS
+0300 SETVBV = $E45C  ;Init. VBI
+0310 UP  =   142     ;"up" internal
+0320 ;                char.
+0330 DOWN =  143     ;"down" internal
+0340 ;                char.
+0350 VBI
+0360 ;If graphics mode being used is
+0370 ;not 0, then exit.
+0380     LDA DINDEX
+0390     BNE EXIT
+0400     LDA ROWCRS  ;Chk. if curs.
+0410     CMP POS1    ;is in either
+0420     BEQ RESET1  ;specified pos.
+0430     CMP POS2
+0440     BEQ RESET2
+0450     BNE EXIT
+0460 RESET1 ;        If so, repos.
+0470     LDA RPOS1
+0480     STA ROWCRS
+0490     LDA #UP
+0500     STA CH
+0510     BNE EXIT
+0520 RESET2
+0530     LDA RPOS2
+0540     STA ROWCRS
+0550     LDA #DOWN
+0560     STA CH
+0570 EXIT JMP XITVBV
+0580 POS1 .BYTE 0
+0590 POS2 .BYTE 0
+0600 RPOS1 .BYTE 0
+0610 RPOS2 .BYTE 0
+0620 ROWCURS
+0630     PLA         ;Num. args.
+0640     PLA         ;Low curs. pos.
+0650     PLA         ;to monitor
+0660     STA POS1
+0670     PLA         ;Low reset curs.
+0680     PLA         ;pos.
+0690     CLC 
+0700     ADC #1
+0710     STA RPOS1
+0720     PLA         ;High curs. pos.
+0730     PLA         ;to monitor
+0740     STA POS2
+0750     PLA         ;High reset
+0760     PLA         ;curs. pos.
+0770     SEC 
+0780     SBC #1
+0790     STA RPOS2
+0800     LDA #7
+0810     LDX # >VBI
+0820     LDY # <VBI
+0830 VBINIT
+0840     JMP SETVBV
+0850 ;****************************
+0860 ;Large fill V.2 by Mark Miller
+0870 ; Assumes at least a page to
+0880 ; fill
+0890 ;
+0900 ; This is configured as a
+0910 ; USR() call.
+0920 ;
+0930 ;Parms:
+0940 ; - Scrn. addr.
+0950 ; - Byte value used for fill
+0960 ; - Num. bytes to fill
+0970 ;****************************
+0980 SCRADR = $00
+0990     *=  $6080
+1000 FILL
+1010     PLA         ;num. args.
+1020     PLA         ;scrn. addr.
+1030     STA SCRADR+1
+1040     PLA 
+1050     STA SCRADR
+1060     PLA 
+1070     PLA         ;byte value used
+1080     STA VALUE   ;to fill
+1090     PLA         ;num. bytes
+1100     STA NUMBYTES+1 ;to fill
+1110     PLA 
+1120     STA NUMBYTES
+1130 DFILL
+1140     LDY #0
+1150     LDA VALUE
+1160 ;Loop in 256-byte chunks
+1170 LOOP1
+1180     STA (SCRADR),Y
+1190     INY 
+1200 ;Cont. loop if Y hasn't turned
+1210 ;over
+1220     BNE LOOP1
+1230     DEC NUMBYTES+1 ;processed 1
+1240 ;                   page
+1250     BEQ REMAIN  ;if <1 page left
+1260 ;                 Otherwise,
+1270     INC SCRADR+1 ;process next
+1280     JMP LOOP1   ;page
+1290 REMAIN
+1300 ;Update, since last page
+1310 ;processed
+1320     INC SCRADR+1
+1330 LOOP2
+1340 ;Fill remainder
+1350     STA (SCRADR),Y
+1360     CPY NUMBYTES
+1370     BEQ STOP
+1380     INY 
+1390     BNE LOOP2
+1400 STOP
+1410     RTS 
+1420 VALUE .BYTE 0
+1430 NUMBYTES .WORD 0
+1440 ;
+1450 ;Code from "Assembly Language
+1460 ;Programming for Atari
+1470 ;Computers" by Mark Chasin
+1480 ;***********************
+1490 ;The Graphics command
+1500 ;***********************
+1510 ;
+1520 ; The "n" parameter of
+1530 ; a Graphics n command will be
+1540 ; passed to this routine in the
+1550 ; Accumulator.
+1560 ;
+1570 ICCOM = $0342
+1580 ICBAL = $0344
+1590 ICBAH = $0345
+1600 ICAX1 = $034A
+1610 ICAX2 = $034B
+1620 CIOV =  $E456
+1630     *=  $60E0
+1640 GRAFIC
+1650     PHA         ;store on stack
+1660     LDX #$60    ;IOCB6 for screen
+1670     LDA #$0C    ;CLOSE command
+1680     STA ICCOM,X ; in command byte
+1690     JSR CIOV    ;do the CLOSE
+1700     LDX #$60    ;the screen again
+1710     LDA #3      ;OPEN command
+1720     STA ICCOM,X ; in command byte
+1730     LDA #NAME&255 ;name is "S:"
+1740     STA ICBAL,X ;  low byte
+1750     LDA #NAME/256 ;  high byte
+1760     STA ICBAH,X
+1770     PLA         ;get Graphics n
+1780     STA ICAX2,X ;graphics mode
+1790     AND #$F0    ;get high 4 bits
+1800     EOR #$10    ;flip high bit
+1810     ORA #$0C    ;read or write
+1820     STA ICAX1,X ;n+16,n+32,etc.
+1830     JSR CIOV    ;setup Graphics n
+1840     RTS 
+1850 NAME .BYTE "S:",$9B
+1860 ;*****************************
+1870 ;USR() rout's for split-screen
+1880 ;maintenance by Mark Miller
+1890 ;*****************************
+1900 ;TOGR8
+1910 ;
+1920 ; Since Basic closes the S:
+1930 ; channel, need to reopen it.
+1940 ; Then tell OS where to find
+1950 ; DL, and give it the new
+1960 ; "drawing" addr. for Gr. 8
+1970 ;
+1980 ; This is configured as a
+1990 ; USR() call.
+2000 ;
+2010 SAVMSC = $58    ;Scrn. ptr.
+2020 SDLSTL = $0230  ;DL reg.
+2030     *=  $6150
+2040 TOGR8
+2050     PLA         ;num. args.
+2060     LDA SAVMSC  ;save Gr. 0
+2070     STA GR0     ;scrn. addr.
+2080     LDA SAVMSC+1
+2090     STA GR0+1
+2100     LDA #0      ;Open "S:" in
+2110     JSR GRAFIC  ;Gr. 0
+2120 ;Reset DL reg. to pt. at
+2130 ;Split-scrn. DL
+2140     PLA         ;get DL addr.
+2150     STA SDLSTL+1
+2160     PLA 
+2170     STA SDLSTL
+2180 ;tell OS we're in Gr. 8
+2190     LDA #8
+2200     STA DINDEX
+2210 ;Move scrn. ptr. to Gr. 8 scrn.
+2220 ;mem.
+2230     PLA         ;get Gr. 8 scrn.
+2240     STA SAVMSC+1 ;addr.
+2250     PLA 
+2260     STA SAVMSC
+2270     RTS 
+2280 GR0 .WORD 0
+2290 ;************************
+2300 ;TOGR0
+2310 ;
+2320 ; Moves output addr. to Gr. 0
+2330 ; scrn. mem.
+2340 ;
+2350 ; This is configured as a
+2360 ; USR() call.
+2370 ;************************
+2380 TOGR0
+2390     PLA         ;num. args.
+2400 ;Move scrn. ptr. to Gr. 0 scrn.
+2410     LDA GR0
+2420     STA SAVMSC
+2430     LDA GR0+1
+2440     STA SAVMSC+1
+2450 ;Tell OS we're in Gr. 0
+2460     LDA #0
+2470     STA DINDEX
+2480     RTS 
