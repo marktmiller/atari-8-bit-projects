@@ -1,0 +1,96 @@
+10 REM Pseudo-Assembler converter
+20 REM Converts assembled listing to
+30 REM Pseudo-Assembler
+40 ------------------------------
+50 *F :DIM LINE$(72),NLINE$(39),INAME$(15),ONAME$(15),NAME$(15)
+60 INPUT "File to convert: ";INAME$
+70 NAME$=INAME$:EXEC CKSPEC
+80 IF STAT=0 THEN 60
+90 INPUT "Converted file: ";ONAME$
+100 NAME$=ONAME$:EXEC CKSPEC
+110 IF STAT=0 THEN 90
+120 ? 
+130 OPEN #1,4,0,INAME$:OPEN #2,8,0,ONAME$
+140 LNNO=1
+150 TRAP 660
+160 DO 
+170   INPUT #1;LINE$
+180   LNLEN=LEN(LINE$)
+190   REM Detect end of listing
+200   IF LNLEN>8
+210     IF LINE$(1,8)="ASSEMBLY" THEN EXIT 
+220   ENDIF 
+230   IF LNLEN>26
+240     REM Ignore non-code markers
+250     IF LINE$(2,5)<>"PAGE" AND LINE$(1,4)<>"    " AND LINE$(5,10)<>"      "
+260       NLINE$=" ":NLINE$(LEN(NLINE$))=" ":NLINE$(2)=" "
+270       EXEC PREP
+280       NLINE$(10,13)=LINE$(1,4):REM Addr.
+290       NLINE$(14)=" "
+300       NLINE$(15,16)=LINE$(6,7):REM Byte 1
+310       NLINE$(17)=" "
+320       NLINE$(18,19)=LINE$(8,9):REM Byte 2
+330       NLINE$(20)=" "
+340       NLINE$(21,22)=LINE$(10,11):REM Byte 3
+350       NLINE$(23)="."
+360       LBL=0
+370       IF LEN(LINE$)>22
+380         IF LINE$(22,22)<>" " THEN LBL=1
+390       ENDIF 
+400       IF LBL=0 THEN NMLEN=LEN(LINE$)-25
+410       IF LBL=1 THEN NMLEN=LEN(LINE$)-21
+420       IF NMLEN<0 THEN ? "Error: Unexpected line length":END 
+430       IF NMLEN<17
+440         IF LBL=0 THEN CODESTART=26
+450         IF LBL=1 THEN CODESTART=22
+460         NLINE$(24,23+NMLEN)=LINE$(CODESTART,CODESTART-1+NMLEN)
+470         FOR I=24+NMLEN TO 38:NLINE$(I,I)=" ":NEXT I
+480         NLINE$(39)="."
+490       ELSE 
+500         IF LBL=0 THEN NLINE$(24,39)=LINE$(26,41)
+510         IF LBL=1 THEN NLINE$(24,39)=LINE$(22,37)
+520       ENDIF 
+530       IF NLINE$(39,39)=" " THEN NLINE$(39)="."
+540       ? NLINE$
+550       ? #2;NLINE$
+560       LNNO=LNNO+1
+570       IF LNNO>9990 THEN ? "Max. line number reached!!":GOTO 660
+580     ENDIF 
+590   ENDIF 
+600 LOOP 
+610 REM Output final line
+620 EXEC PREP
+630 NLINE$(10)="0000 XX      .end program    ."
+640 ? NLINE$
+650 ? #2;NLINE$
+660 CLOSE #1:CLOSE #2:END 
+670 REM Input: LNNO
+680 REM Output: NLINE$ - W/ line # and "REM"
+690 PROC PREP
+700   NLINE$=STR$(LNNO)
+710   IF LEN(NLINE$)<4
+720     FOR I=LEN(NLINE$)+1 TO 4:NLINE$(I,I)=" ":NEXT I
+730   ENDIF 
+740   NLINE$(5)=" REM "
+750 ENDPROC 
+760 REM Input: NAME$
+770 REM Output: STAT
+780 REM - 1=Good, 2=Bad
+790 PROC CKSPEC
+800   LET STAT=0
+810   DCH=ASC(NAME$(2,2)):CPOS=INSTR(NAME$,":",1)
+820   IF CPOS=0 OR CPOS>3 OR (CPOS=3 AND (DCH<49 OR DCH>57))
+830     ? "Need a drive spec."
+840   ELSE 
+850     IF CPOS=2 AND LEN(NAME$)=2 OR CPOS=3 AND LEN(NAME$)=3
+860       ? "Need a filename"
+870     ELSE 
+880       FSTCH=ASC(NAME$(CPOS+1,CPOS+1))
+890       IF FSTCH<65 OR FSTCH>90
+900         ? "Improper filename"
+910       ELSE 
+920         LET STAT=1:REM Spec. is good
+930       ENDIF 
+940     ENDIF 
+950   ENDIF 
+960 ENDPROC 
