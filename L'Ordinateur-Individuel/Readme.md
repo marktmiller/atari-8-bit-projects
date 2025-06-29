@@ -42,8 +42,8 @@ Original implementation in TRS-80 Basic
 I'd seen examples of this in some Commodore 64 Basic code, where programmers put machine code in hex, perhaps along with
 mnemonics, inside REM statements, which some routine would read through, and poke the machine code into memory. The author of
 "Pseudo-Assembler" did this on the TRS-80. I ported his code to Turbo Basic XL. It's called PSEUDASM.LST. It's LISTed code
-you ENTER into your program. It's designed as a more readable substitute for using DATA statements to enter machine code
-into memory.
+that's designed to be ENTER'ed into your Basic code. It's designed as a more readable substitute for using DATA statements to
+enter machine code into memory.
 
 Pseudo-Assembler is not really an assembler, hence the name. It's a hex code converter, but what's nice is it allows you to
 list assembly mnemonics alongside your code.
@@ -74,7 +74,8 @@ different length from the other lines. This will throw Pseudo-Assembler off, and
 Another important thing to note is the special "XX" code at the bottom of the listing. This tells the Pseudo-Assembler to
 stop.
 
-When you're ready to load your machine code, GOSUB to line 30290 from within your program.
+When you're ready to load your machine code, GOSUB to line 30290 from within your program. It will automatically enter your
+machine code, and return control to your program.
 
 ## Hex dump
 
@@ -113,3 +114,6 @@ listed here as PACNV.TBS.
 When you run this conversion tool, it asks you for the name of your assembly listing file, and the name of the text file you
 want the Basic code it generates sent to. (You will ENTER the file it produces into your Basic program.) It prints out its
 generated REM statements while it writes them to the output file.
+
+I have only tested this tool with Mac/65-generated assembly listings. I assume it will work with Atari Assembler listings,
+as well.
