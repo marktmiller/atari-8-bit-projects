@@ -25,5 +25,30 @@ When you're done, press the "Q" key for Quit. This will turn all the sound regis
 setting blaring through the speaker, but the last values that you altered in the registers will continue to be displayed on
 screen, so that you can note them down, and use those values in your program.
 
-I used this program to create some of the sound effects in the Atari versions of Creative Computing games I've put under
-the-best-of-creative-computing1 folder.
+I used this program to create some of the sound effects for other Basic programs I've posted to this repository.
+
+# Binary-to-Data statements
+
+CBINDAT.TBS is a utility I wrote in Turbo Basic to convert a DOS-formatted binary file (produced by a compiler or
+assembler) to DATA statements in Basic.
+
+It will prompt you for the binary file to convert, and then the text file where you want the converted output to go (you will
+ENTER the generated file into your Basic program). It will also ask you what you want the starting line number for the DATA
+statements to be.
+
+After giving these three inputs, it will start converting the binary file.
+
+It will display on the screen the binary segment addresses it's processing. These are the start and end addresses for the
+bytes it's converting. These addresses are displayed in hex. After this, it will display the DATA statements it's created
+for that segment (in decimal). If there are more segments to convert, it will repeat the display of start and end addresses,
+followed by their DATA statements.
+
+You may wish to note the start and end addresses, as they are not recorded in the converted file, and represent a memory map
+of your machine code. You can press Ctrl-1 to pause the display. These addresses may be useful for your machine code loader.
+
+Once it's done, it will give a count of the bytes that have been processed.
+
+Next, load the program you want to use with the machine code you've converted, and then ENTER the generated file, to merge
+the DATA statements with your program.
+
+This program does not generate code for a machine language loader. That is left up to you.
