@@ -10,6 +10,9 @@ Original implementation in Atom Basic
 
 [Original listing](https://download.abandonware.org/magazines/L%20Ordinateur%20Individuel/ordinateurindividuel_numerohs54/L%27ordinateur%20individuel%20HS%20N%C2%B054%20-%20page082%20et%20%20page083.jpg)
 
+![Atom Lunar Lander screenshot](https://github.com/user-attachments/assets/7926a6d7-c9e5-4a95-9031-7076b3e37952)
+
+
 This is Lunar Lander for the Acorn Atom computer. I ported it to Turbo Basic XL, listed as MOONLAND.TBS.
 
 Control your lunar module using a joystick plugged into Port 1. Use Left and Right on the stick to steer your module left
@@ -117,3 +120,6 @@ generated REM statements while it writes them to the output file.
 
 I have only tested this tool with Mac/65-generated assembly listings. I assume it will work with Atari Assembler listings,
 as well.
+
+Since Pseudo-Assembler listings need to be at the top of one's program, and no other lines of code should be allowed to be
+inserted in that code, I decided to start converted listings at Line #1, and each line number is incremented by 1.
