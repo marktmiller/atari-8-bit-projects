@@ -123,3 +123,11 @@ as well.
 
 Since Pseudo-Assembler listings need to be at the top of one's program, and no other lines of code should be allowed to be
 inserted in that code, I decided to start converted listings at Line #1, and each line number is incremented by 1.
+
+## A Pseudo-Assembler example
+
+SPLIT2.TBS is a test I did of Pseudo-Assembler. I took the assembler output for PRESLIB.M65 from my [split-screen](https://github.com/marktmiller/atari-8-bit-projects/tree/main/split-screen)
+project and ran it through my conversion tool, PACNV.TBS. I modified the comments section of the pseudo-assembler code
+a little, to bring in some of the assembly labels the converter excluded. I then ENTER'ed the converted file into
+SPLIT.TBS from the split-screen project, and adjusted the rest of its code to use the Pseudo-Assembler to put the machine
+code into memory. If you'd like to use this version of split-screen, read my directions for that project.
