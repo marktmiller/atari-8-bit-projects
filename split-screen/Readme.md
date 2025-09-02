@@ -6,8 +6,8 @@
 I created a scheme for allowing you to program in Basic while drawing graphics on the same screen, in a split-screen fashion.
 It takes some effort to pull off, since Basic wasn't designed to be used this way.
 
-What's needed is a custom display list that sets up half of the screen as Graphics 8, half as Graphics 0, and some additional
-memory used as screen RAM.
+I created a custom display list that sets up half of the screen as Graphics 8, and half as Graphics 0. I also used some
+additional memory for screen RAM.
 
 What I set up is kind of an optical illusion. I boot into Turbo Basic XL, and run a Basic program that sets up the
 display list, and runs some machine language routines, to set up the split-screen.
@@ -22,12 +22,13 @@ prevents one from drawing bitmap graphics. When I'd try to run graphics code, I'
 I had to reopen S: with what's essentially a "Graphics 0" command, but that clears the entire screen, taking away the
 split-screen. To get it back, I reinitialize the system display list pointer to my custom display list. I also clear the
 screen memory for the Graphics 8 pane, because it's using a separate area of memory that isn't cleared by the OS. I have
-a "fill" routine to do that. Basically, once that's done, I can start drawing on the Graphics 8 pane.
+a "fill" routine to do that. This is all done in the first two USR() calls (explained below). Basically, once that's done, I
+can start drawing on the Graphics 8 pane.
 
 However, while code is running, the lower pane is completely blanked out. This is due to the OS wiping the screen memory
 when I reopen S:. I tried doing some things to get the code display back, so I could see it while the code was running,
 but this created some weird effects I didn't like. So, I just keep the lower pane blank while the code runs, and I get the
-cursor back in the lower pane when the code stops. The Basic code is still in memory. It just isn't on the display.
+cursor back in the lower pane when the program stops. The Basic code is still in memory. It just isn't on the display.
 It can be restored to the screen by typing `LIST`.
 
 As I progressed on this project, I could see I was using Basic in ways contrary to its design. So, there are some compromises.
