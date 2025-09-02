@@ -3,15 +3,8 @@
 ![Split-screen](https://github.com/user-attachments/assets/5e114a2b-a370-4984-a9eb-1425910caa60)
 
 
-I got a request in 2021 to create a demo where I had a Graphics 8 screen on the top half of the screen, and Basic code I was
-working on in the lower half, that drew graphics on the upper half. The person requesting this thought there was a graphics
-mode that could do this. There isn't. Though, documentation on the graphics modes have used the term "split screen" to
-describe a mode you can put graphics modes into, where you use most of the screen as a bitmap display, with 4 lines of
-Graphics 0 text at the bottom.
-
-There is a way to program the Atari to do what was requested, but it takes some effort to pull off. I was interested in
-trying to do this, but didn't know how at the time. I set about trying to figure it out for a while, and then got
-interested in other things. I just recently got back to it, and finished it.
+I created a scheme for allowing you to program in Basic while drawing graphics on the same screen, in a split-screen fashion.
+It takes some effort to pull off, since Basic wasn't designed to be used this way.
 
 What's needed is a custom display list that sets up half of the screen as Graphics 8, half as Graphics 0, and some additional
 memory used as screen RAM.
@@ -34,12 +27,12 @@ a "fill" routine to do that. Basically, once that's done, I can start drawing on
 However, while code is running, the lower pane is completely blanked out. This is due to the OS wiping the screen memory
 when I reopen S:. I tried doing some things to get the code display back, so I could see it while the code was running,
 but this created some weird effects I didn't like. So, I just keep the lower pane blank while the code runs, and I get the
-cursor back in the lower pane when the code stops running. The Basic code is still in memory. It just isn't on the display.
-It can be restored to the screen by just typing `LIST`.
+cursor back in the lower pane when the code stops. The Basic code is still in memory. It just isn't on the display.
+It can be restored to the screen by typing `LIST`.
 
-As I progressed on this project, I could see I was using the Atari and Basic in ways contrary to their design. So, there
-are some compromises. The main one being that some machine language routines need to be run to set things up for a program
-to run, and then some "clean up" at the end.
+As I progressed on this project, I could see I was using Basic in ways contrary to its design. So, there are some compromises.
+The main one being that some machine language routines need to be run to set things up for a graphics program to run, and then
+some "clean up" at the end, to get cursor control back to Graphics 0.
 
 Each program needs to be initialized, and closed down as follows:
 ```
